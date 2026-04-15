@@ -1,8 +1,7 @@
 {
   "name": "ignore-lint-errors",
-  "version": "0.0.0",
-  "private": true,
-  "description": "Small description for ignore-lint-errors goes here",
+  "version": "0.1.0",
+  "description": "Codemod to add ignore directives",
   "keywords": [
     "codemod",
     "ember-codemod",

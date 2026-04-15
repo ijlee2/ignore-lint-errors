@@ -2,7 +2,7 @@
 
 # ignore-lint-errors
 
-_Codemod to [PROVIDE A SHORT DESCRIPTION.]_
+_Codemod to add ignore directives_
 
 
 ## Usage
