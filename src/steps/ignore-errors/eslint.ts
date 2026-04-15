@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { EOL } from 'node:os';
 import { join } from 'node:path';
 
 import { removeFiles } from '@codemod-utils/files';
@@ -18,7 +19,7 @@ export function ignoreErrorsFromEslint(options: Options): void {
 
   filesWithErrors.forEach(({ absoluteFilePath, lintErrors }) => {
     const file = readFileSync(absoluteFilePath, 'utf8');
-    const lines = file.split('\n');
+    const lines = file.split(EOL);
 
     lintErrors.forEach(({ line, message }) => {
       const ignoreDirective = `// @ts-expect-error: ${message}`;
@@ -26,7 +27,7 @@ export function ignoreErrorsFromEslint(options: Options): void {
       lines.splice(line - 1, 0, ignoreDirective);
     });
 
-    writeFileSync(absoluteFilePath, lines.join('\n'), 'utf8');
+    writeFileSync(absoluteFilePath, lines.join(EOL), 'utf8');
   });
 
   removeFiles([outputFilePath], { projectRoot });
