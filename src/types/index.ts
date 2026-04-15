@@ -3,7 +3,7 @@ type CodemodOptions = {
   projectRoot: string;
 };
 
-type Linter = 'eslint';
+type Linter = 'eslint' | 'typescript';
 
 type Options = {
   linter: Linter;
