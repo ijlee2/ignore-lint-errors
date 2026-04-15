@@ -31,7 +31,9 @@
     "test": "sh build.sh --test && mt dist-for-testing --quiet"
   },
   "dependencies": {
+    "@codemod-utils/ast-template-tag": "^2.1.0",
     "@codemod-utils/files": "^4.0.1",
+    "@codemod-utils/package-json": "^4.0.1",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
