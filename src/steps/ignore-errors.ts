@@ -1,12 +1,26 @@
 import type { Options } from '../types/index.js';
-import { ignoreErrorsFromEslint } from './ignore-errors/index.js';
+import {
+  ignoreErrorsFromEslint,
+  ignoreErrorsFromTypescript,
+} from './ignore-errors/index.js';
 
 export function ignoreErrors(options: Options): void {
-  const { linter } = options;
+  const { dependencies, linter } = options;
 
   switch (linter) {
     case 'eslint': {
-      ignoreErrorsFromEslint(options);
+      if (dependencies.eslint) {
+        ignoreErrorsFromEslint(options);
+      }
+
+      break;
+    }
+
+    case 'typescript': {
+      if (dependencies.typescript) {
+        ignoreErrorsFromTypescript(options);
+      }
+
       break;
     }
   }

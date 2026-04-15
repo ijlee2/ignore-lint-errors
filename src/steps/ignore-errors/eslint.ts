@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { EOL } from 'node:os';
 import { join } from 'node:path';
 
@@ -9,10 +9,6 @@ import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
 
 export function ignoreErrorsFromEslint(options: Options): void {
   const { projectRoot } = options;
-
-  if (!existsSync(join(projectRoot, outputFilePath))) {
-    return;
-  }
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
   const filesWithErrors = parseOutputFile(outputFile);
