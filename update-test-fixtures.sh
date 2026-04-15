@@ -20,4 +20,5 @@ rm -r "tests/fixtures/my-v2-app/output"
 cp -r "tests/fixtures/my-v2-app/input" "tests/fixtures/my-v2-app/output"
 
 ./dist/bin/ignore-lint-errors.js \
+  --linter eslint \
   --root "tests/fixtures/my-v2-app/output"

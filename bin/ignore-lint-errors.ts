@@ -12,13 +12,20 @@ process.title = 'ignore-lint-errors';
 
 // Set codemod options
 const argv = yargs(hideBin(process.argv))
+  .option('linter', {
+    choices: ['eslint'] as const,
+    describe: 'Linter to run',
+    type: 'string',
+  })
   .option('root', {
     describe: 'Where to run the codemod',
     type: 'string',
   })
+  .demandOption(['linter'])
   .parseSync();
 
 const codemodOptions: CodemodOptions = {
+  linter: argv['linter'],
   projectRoot: argv['root'] ?? process.cwd(),
 };
 
