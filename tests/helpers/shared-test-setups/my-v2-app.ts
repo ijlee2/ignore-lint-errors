@@ -6,6 +6,11 @@ const codemodOptions: CodemodOptions = {
 };
 
 const options: Options = {
+  dependencies: {
+    eslint: false,
+    glint: false,
+    typescript: false,
+  },
   linter: 'eslint',
   projectRoot: 'tmp/my-v2-app',
 };
