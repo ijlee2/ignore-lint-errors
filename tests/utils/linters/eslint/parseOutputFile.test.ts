@@ -2,7 +2,7 @@ import { assert, test } from '@codemod-utils/tests';
 
 import { parseOutputFile } from '../../../../src/utils/linters/eslint.js';
 
-test('utils | lint-files | eslint > parseOutputFile', function () {
+test('utils | linters | eslint > parseOutputFile', function () {
   let outputFile = '[]';
   let filesWithErrors = parseOutputFile(outputFile);
 

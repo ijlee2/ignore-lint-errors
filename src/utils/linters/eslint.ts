@@ -1,12 +1,5 @@
 export const outputFilePath = '.ignore-lint-errors/eslint.txt';
 
-export const command = [
-  './node_modules/.bin/eslint',
-  '--format json',
-  `--output-file ${outputFilePath}`,
-  '--quiet',
-].join(' ');
-
 // https://github.com/eslint/eslint/blob/v9.27.0/lib/types/index.d.ts
 type EslintFix = {
   range: [number, number];
