@@ -2,36 +2,14 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { EOL } from 'node:os';
 import { join } from 'node:path';
 
-import { findTemplateTags } from '@codemod-utils/ast-template-tag';
 import { removeFiles } from '@codemod-utils/files';
 
 import type { Options } from '../../types/index.js';
+import { findLinesWithTemplate } from '../../utils/ignore-errors/typescript.js';
 import {
   outputFilePath,
   parseOutputFile,
 } from '../../utils/linters/typescript.js';
-
-function findLinesWithTemplate(file: string): [number, number][] {
-  function getLOC(file: string): number {
-    const matches = file.match(/\r?\n/g);
-
-    return (matches ?? []).length;
-  }
-
-  const templateTags = findTemplateTags(file);
-  const linesWithTemplate: [number, number][] = [];
-
-  templateTags.forEach((templateTag) => {
-    const { range } = templateTag;
-
-    const lineStart = getLOC(file.substring(0, range.startChar)) + 1;
-    const lineEnd = getLOC(file.substring(0, range.endChar)) + 1;
-
-    linesWithTemplate.push([lineStart, lineEnd]);
-  });
-
-  return linesWithTemplate;
-}
 
 export function ignoreErrorsFromTypescript(options: Options): void {
   const { projectRoot } = options;
