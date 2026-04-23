@@ -1,3 +1,4 @@
+import { AST } from '@codemod-utils/ast-template';
 import { findTemplateTags } from '@codemod-utils/ast-template-tag';
 
 export function findLinesWithTemplate(file: string): [number, number][] {
@@ -20,4 +21,25 @@ export function findLinesWithTemplate(file: string): [number, number][] {
   });
 
   return linesWithTemplate;
+}
+
+export function isParseable(file: string): boolean {
+  const traverse = AST.traverse();
+  let isParseable = true;
+
+  function parseTemplate(template: string): void {
+    try {
+      traverse(template);
+    } catch {
+      isParseable = false;
+    }
+  }
+
+  const templateTags = findTemplateTags(file);
+
+  templateTags.forEach((templateTag) => {
+    parseTemplate(templateTag.contents);
+  });
+
+  return isParseable;
 }
