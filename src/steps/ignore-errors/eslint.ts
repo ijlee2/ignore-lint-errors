@@ -11,10 +11,10 @@ export function ignoreErrorsFromEslint(options: Options): void {
   const { projectRoot } = options;
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
-  const filesWithErrors = parseOutputFile(outputFile);
+  const filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
-  filesWithErrors.forEach(({ absoluteFilePath, lintErrors }) => {
-    const file = readFileSync(absoluteFilePath, 'utf8');
+  filesWithErrors.forEach(({ filePath, lintErrors }) => {
+    const file = readFileSync(join(projectRoot, filePath), 'utf8');
     const lines = file.split(EOL);
 
     lintErrors.forEach(({ line, message }) => {
@@ -23,7 +23,7 @@ export function ignoreErrorsFromEslint(options: Options): void {
       lines.splice(line - 1, 0, ignoreDirective);
     });
 
-    writeFileSync(absoluteFilePath, lines.join(EOL), 'utf8');
+    writeFileSync(join(projectRoot, filePath), lines.join(EOL), 'utf8');
   });
 
   removeFiles([outputFilePath], { projectRoot });

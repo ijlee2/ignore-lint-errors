@@ -1,16 +1,20 @@
+import { join, sep } from 'node:path';
+
 import { assert, test } from '@codemod-utils/tests';
 
 import { parseOutputFile } from '../../../../src/utils/linters/eslint.js';
 
 test('utils | linters | eslint > parseOutputFile', function () {
+  const projectRoot = join(process.cwd(), 'tmp/my-v2-app').replaceAll(sep, '/');
+
   let outputFile = '[]';
-  let filesWithErrors = parseOutputFile(outputFile);
+  let filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
   assert.deepStrictEqual(filesWithErrors, []);
 
   outputFile = JSON.stringify([
     {
-      filePath: '/<project-root>/app/components/example-1.gts',
+      filePath: `${projectRoot}/app/components/example-1.gts`,
       messages: [
         {
           ruleId: '@typescript-eslint/explicit-function-return-type',
@@ -91,7 +95,7 @@ test('utils | linters | eslint > parseOutputFile', function () {
       usedDeprecatedRules: [],
     },
     {
-      filePath: '/<project-root>/app/components/example-2.gts',
+      filePath: `${projectRoot}/app/components/example-2.gts`,
       messages: [
         {
           ruleId: 'ember/no-computed-properties-in-native-classes',
@@ -159,11 +163,11 @@ test('utils | linters | eslint > parseOutputFile', function () {
     },
   ]);
 
-  filesWithErrors = parseOutputFile(outputFile);
+  filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
   assert.deepStrictEqual(filesWithErrors, [
     {
-      absoluteFilePath: '/<project-root>/app/components/example-1.gts',
+      filePath: 'app/components/example-1.gts',
       lintErrors: [
         {
           line: 36,
@@ -181,7 +185,7 @@ test('utils | linters | eslint > parseOutputFile', function () {
       ],
     },
     {
-      absoluteFilePath: '/<project-root>/app/components/example-2.gts',
+      filePath: 'app/components/example-2.gts',
       lintErrors: [
         {
           line: 59,

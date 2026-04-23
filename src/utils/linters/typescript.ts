@@ -1,16 +1,8 @@
 import { EOL } from 'node:os';
 
+import type { FilesWithErrors, LintError } from '../../types/index.js';
+
 export const outputFilePath = '.ignore-lint-errors/typescript.txt';
-
-type LintError = {
-  line: number;
-  message: string;
-};
-
-type FilesWithErrors = {
-  filePath: string;
-  lintErrors: LintError[];
-};
 
 export function parseOutputFile(file: string): FilesWithErrors[] {
   const filePathToData = new Map<string, Map<number, string[]>>();
