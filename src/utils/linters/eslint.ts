@@ -1,6 +1,10 @@
+import { relative, sep } from 'node:path';
+
+import type { FilesWithErrors, LintError } from '../../types/index.js';
+
 export const outputFilePath = '.ignore-lint-errors/eslint.txt';
 
-// https://github.com/eslint/eslint/blob/v9.27.0/lib/types/index.d.ts
+// https://github.com/eslint/eslint/blob/v9.39.4/lib/types/index.d.ts
 type EslintFix = {
   range: [number, number];
   text: string;
@@ -47,17 +51,10 @@ type EslintLintResult = {
   warningCount: number;
 };
 
-type LintError = {
-  line: number;
-  message: string;
-};
-
-type FilesWithErrors = {
-  absoluteFilePath: string;
-  lintErrors: LintError[];
-};
-
-export function parseOutputFile(file: string): FilesWithErrors[] {
+export function parseOutputFile(
+  file: string,
+  projectRoot: string,
+): FilesWithErrors[] {
   const filePathToData = new Map<string, Map<number, string[]>>();
   const records = JSON.parse(file) as EslintLintResult[];
 
@@ -73,12 +70,17 @@ export function parseOutputFile(file: string): FilesWithErrors[] {
       }
     });
 
-    filePathToData.set(absoluteFilePath, data);
+    const filePath = relative(projectRoot, absoluteFilePath).replaceAll(
+      sep,
+      '/',
+    );
+
+    filePathToData.set(filePath, data);
   });
 
   const filesWithErrors: FilesWithErrors[] = [];
 
-  filePathToData.forEach((data, absoluteFilePath) => {
+  filePathToData.forEach((data, filePath) => {
     const lintErrors: LintError[] = [];
 
     data.forEach((allMessages, line) => {
@@ -103,7 +105,7 @@ export function parseOutputFile(file: string): FilesWithErrors[] {
     });
 
     filesWithErrors.push({
-      absoluteFilePath,
+      filePath,
       lintErrors,
     });
   });

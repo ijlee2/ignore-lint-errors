@@ -9,7 +9,17 @@ type Dependencies = {
   typescript: boolean;
 };
 
+type FilesWithErrors = {
+  filePath: string;
+  lintErrors: LintError[];
+};
+
 type Linter = 'eslint' | 'typescript';
+
+type LintError = {
+  line: number;
+  message: string;
+};
 
 type Options = {
   dependencies: Dependencies;
@@ -17,4 +27,11 @@ type Options = {
   projectRoot: string;
 };
 
-export type { CodemodOptions, Dependencies, Linter, Options };
+export type {
+  CodemodOptions,
+  Dependencies,
+  FilesWithErrors,
+  Linter,
+  LintError,
+  Options,
+};

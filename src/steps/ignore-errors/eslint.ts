@@ -4,26 +4,32 @@ import { join } from 'node:path';
 
 import { removeFiles } from '@codemod-utils/files';
 
-import type { Options } from '../../types/index.js';
+import type { LintError, Options } from '../../types/index.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
+
+function ignoreErrors(file: string, lintErrors: LintError[]): string {
+  const lines = file.split(EOL);
+
+  lintErrors.forEach(({ line, message }) => {
+    const ignoreDirective = `// eslint-disable-next-line ${message}`;
+
+    lines.splice(line - 1, 0, ignoreDirective);
+  });
+
+  return lines.join(EOL);
+}
 
 export function ignoreErrorsFromEslint(options: Options): void {
   const { projectRoot } = options;
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
-  const filesWithErrors = parseOutputFile(outputFile);
+  const filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
-  filesWithErrors.forEach(({ absoluteFilePath, lintErrors }) => {
-    const file = readFileSync(absoluteFilePath, 'utf8');
-    const lines = file.split(EOL);
+  filesWithErrors.forEach(({ filePath, lintErrors }) => {
+    const file = readFileSync(join(projectRoot, filePath), 'utf8');
+    const newFile = ignoreErrors(file, lintErrors);
 
-    lintErrors.forEach(({ line, message }) => {
-      const ignoreDirective = `// eslint-disable-next-line ${message}`;
-
-      lines.splice(line - 1, 0, ignoreDirective);
-    });
-
-    writeFileSync(absoluteFilePath, lines.join(EOL), 'utf8');
+    writeFileSync(join(projectRoot, filePath), newFile, 'utf8');
   });
 
   removeFiles([outputFilePath], { projectRoot });
