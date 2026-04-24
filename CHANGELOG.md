@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0
+
+### Minor Changes
+
+- [#7](https://github.com/ijlee2/ignore-lint-errors/pull/7) Supported stylelint ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#8](https://github.com/ijlee2/ignore-lint-errors/pull/8) Refactored code ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.3.0
 
 ### Minor Changes
