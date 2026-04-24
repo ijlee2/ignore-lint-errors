@@ -1,23 +1,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
-import { EOL } from 'node:os';
 import { join } from 'node:path';
 
 import { removeFiles } from '@codemod-utils/files';
 
-import type { LintError, Options } from '../../types/index.js';
+import type { Options } from '../../types/index.js';
+import { ignoreErrors } from '../../utils/ignore-errors/stylelint.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
-
-function ignoreErrors(file: string, lintErrors: LintError[]): string {
-  const lines = file.split(EOL);
-
-  lintErrors.forEach(({ line, message }) => {
-    const ignoreDirective = `// eslint-disable-next-line ${message}`;
-
-    lines.splice(line - 1, 0, ignoreDirective);
-  });
-
-  return lines.join(EOL);
-}
 
 export function ignoreErrorsFromEslint(options: Options): void {
   const { projectRoot } = options;

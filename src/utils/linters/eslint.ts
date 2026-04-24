@@ -20,7 +20,7 @@ type EslintLintMessage = {
   message: string;
   messageId?: string | undefined;
   nodeType?: string | undefined;
-  ruleId: string | null;
+  ruleId: string;
   severity: 1 | 2;
   suggestions?:
     | {
@@ -64,9 +64,9 @@ export function parseOutputFile(
 
     messages.forEach(({ line, ruleId }) => {
       if (data.has(line)) {
-        data.get(line)!.push(ruleId!);
+        data.get(line)!.push(ruleId);
       } else {
-        data.set(line, [ruleId!]);
+        data.set(line, [ruleId]);
       }
     });
 
@@ -91,6 +91,10 @@ export function parseOutputFile(
         message: ruleIds.join(', '),
       });
     });
+
+    if (lintErrors.length === 0) {
+      return;
+    }
 
     lintErrors.sort((a, b) => {
       if (a.line < b.line) {

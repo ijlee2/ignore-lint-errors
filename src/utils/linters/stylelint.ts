@@ -50,11 +50,7 @@ export function parseOutputFile(
 
     const data = new Map<number, string[]>();
 
-    warnings.forEach(({ line, rule, severity }) => {
-      if (severity === 'warning') {
-        return;
-      }
-
+    warnings.forEach(({ line, rule }) => {
       if (data.has(line)) {
         data.get(line)!.push(rule);
       } else {
