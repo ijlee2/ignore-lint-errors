@@ -15,6 +15,7 @@ function findDependencies(projectRoot: string): Dependencies {
     glint:
       projectDependencies.has('@glint/core') ||
       projectDependencies.has('@glint/ember-tsc'),
+    stylelint: projectDependencies.has('stylelint'),
     typescript: projectDependencies.has('typescript'),
   };
 }

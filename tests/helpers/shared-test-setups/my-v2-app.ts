@@ -9,6 +9,7 @@ const options: Options = {
   dependencies: {
     eslint: false,
     glint: false,
+    stylelint: false,
     typescript: false,
   },
   linter: 'eslint',

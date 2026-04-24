@@ -6,6 +6,7 @@ type CodemodOptions = {
 type Dependencies = {
   eslint: boolean;
   glint: boolean;
+  stylelint: boolean;
   typescript: boolean;
 };
 
@@ -14,7 +15,7 @@ type FilesWithErrors = {
   lintErrors: LintError[];
 };
 
-type Linter = 'eslint' | 'typescript';
+type Linter = 'eslint' | 'stylelint' | 'typescript';
 
 type LintError = {
   line: number;
