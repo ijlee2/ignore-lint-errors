@@ -43,6 +43,10 @@ export function parseOutputFile(file: string): FilesWithErrors[] {
       });
     });
 
+    if (lintErrors.length === 0) {
+      return;
+    }
+
     lintErrors.sort((a, b) => {
       if (a.line < b.line) {
         return 1;
