@@ -1,6 +1,6 @@
 {
   "name": "ignore-lint-errors",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Codemod to ignore lint errors per line",
   "keywords": [
     "codemod",
