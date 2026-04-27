@@ -31,6 +31,7 @@
     "test": "sh build.sh --test && mt dist-for-testing --quiet"
   },
   "dependencies": {
+    "@codemod-utils/ast-javascript": "^3.0.1",
     "@codemod-utils/ast-template": "^3.0.1",
     "@codemod-utils/ast-template-tag": "^2.1.0",
     "@codemod-utils/files": "^4.0.1",
