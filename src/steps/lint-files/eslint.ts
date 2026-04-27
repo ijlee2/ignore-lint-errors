@@ -5,7 +5,8 @@ import { findFiles } from '@codemod-utils/files';
 import type { Options } from '../../types/index.js';
 import { outputFilePath } from '../../utils/linters/eslint.js';
 
-function getConcurrencyOption(projectRoot: string): string {
+function getConcurrencyOption(options: Options): string {
+  const { projectRoot } = options;
   let isConcurrencySupported = true;
 
   try {
@@ -35,12 +36,23 @@ function getConcurrencyOption(projectRoot: string): string {
   return `--concurrency ${concurrency}`;
 }
 
+function getSrc(options: Options): string {
+  const { src } = options;
+
+  if (src === undefined) {
+    return '.';
+  }
+
+  return src.map((token) => `"${token}"`).join(' ');
+}
+
 export function runEslint(options: Options): void {
   const { projectRoot } = options;
 
   const command = [
     './node_modules/.bin/eslint',
-    getConcurrencyOption(projectRoot),
+    getSrc(options),
+    getConcurrencyOption(options),
     '--format json',
     `--output-file ${outputFilePath}`,
     '--quiet',

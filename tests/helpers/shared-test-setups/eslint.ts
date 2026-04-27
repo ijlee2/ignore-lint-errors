@@ -3,6 +3,7 @@ import type { CodemodOptions, Options } from '../../../src/types/index.js';
 const codemodOptions: CodemodOptions = {
   linter: 'eslint',
   projectRoot: 'tmp/eslint',
+  src: undefined,
 };
 
 const options: Options = {
@@ -14,6 +15,7 @@ const options: Options = {
   },
   linter: 'eslint',
   projectRoot: 'tmp/eslint',
+  src: undefined,
 };
 
 export { codemodOptions, options };

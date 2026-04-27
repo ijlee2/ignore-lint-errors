@@ -65,6 +65,33 @@ pnpx ignore-lint-errors --root <path/to/your/project>
 
 </details>
 
+<details>
+
+<summary>Optional: Specify files to lint</summary>
+
+Pass `--src` to lint specific files.
+
+```sh
+# eslint supports files
+pnpx ignore-lint-errors --linter eslint --src app/components/example-1.gts app/templates/example-2.gts
+
+# eslint supports directories
+pnpx ignore-lint-errors --linter eslint --src app tests
+
+# eslint supports globs
+pnpx ignore-lint-errors --linter eslint --src app/{components,templates}/**/*.gts
+```
+
+```sh
+# stylelint supports files
+pnpx ignore-lint-errors --linter stylelint --src app/components/example-1.module.css app/templates/example-2.module.css
+
+# stylelint supports globs
+pnpx ignore-lint-errors --linter stylelint --src **/*.scss
+```
+
+</details>
+
 
 ### Limitations
 

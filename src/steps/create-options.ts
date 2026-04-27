@@ -19,11 +19,12 @@ function findDependencies(projectRoot: string): Dependencies {
 }
 
 export function createOptions(codemodOptions: CodemodOptions): Options {
-  const { linter, projectRoot } = codemodOptions;
+  const { linter, projectRoot, src } = codemodOptions;
 
   return {
     dependencies: findDependencies(projectRoot),
     linter,
     projectRoot,
+    src,
   };
 }

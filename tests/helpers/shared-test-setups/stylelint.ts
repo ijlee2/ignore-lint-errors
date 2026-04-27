@@ -3,6 +3,7 @@ import type { CodemodOptions, Options } from '../../../src/types/index.js';
 const codemodOptions: CodemodOptions = {
   linter: 'stylelint',
   projectRoot: 'tmp/stylelint',
+  src: undefined,
 };
 
 const options: Options = {
@@ -14,6 +15,7 @@ const options: Options = {
   },
   linter: 'stylelint',
   projectRoot: 'tmp/stylelint',
+  src: undefined,
 };
 
 export { codemodOptions, options };
