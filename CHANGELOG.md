@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0
+
+### Minor Changes
+
+- [#19](https://github.com/ijlee2/ignore-lint-errors/pull/19) Allowed running eslint on select files ([@ijlee2](https://github.com/ijlee2))
+- [#19](https://github.com/ijlee2/ignore-lint-errors/pull/19) Allowed running stylelint on select files ([@ijlee2](https://github.com/ijlee2))
+- [#18](https://github.com/ijlee2/ignore-lint-errors/pull/18) Allowed codemod to run eslint with `--concurrency` ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.7.0
 
 ### Minor Changes
