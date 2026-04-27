@@ -87,7 +87,7 @@ pnpx ignore-lint-errors --linter eslint --src app/{components,templates}/**/*.gt
 pnpx ignore-lint-errors --linter stylelint --src app/components/example-1.module.css app/templates/example-2.module.css
 
 # stylelint supports globs
-pnpx ignore-lint-errors --linter stylelint --src **/*.scss
+pnpx ignore-lint-errors --linter stylelint --src app/components/**/*.css
 ```
 
 </details>

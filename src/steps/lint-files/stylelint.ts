@@ -7,7 +7,7 @@ function getSrc(options: Options): string {
   const { src } = options;
 
   if (src === undefined) {
-    return '**/*.css';
+    return '"**/*.{css,scss}"';
   }
 
   return src.map((token) => `"${token}"`).join(' ');
