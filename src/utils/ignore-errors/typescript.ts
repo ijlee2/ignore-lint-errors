@@ -59,8 +59,20 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
     if (erroredInTemplate) {
       const ignoreDirective = `{{! @glint-expect-error: ${message} }}`;
+      const { contents, lineRange } = templateTags[templateTagIndex]!;
 
-      lines.splice(currentIndex, 0, ignoreDirective);
+      if (lineRange.start !== lineRange.end) {
+        lines.splice(currentIndex, 0, ignoreDirective);
+
+        return;
+      }
+
+      const newTemplate = lines[currentIndex]!.replace(
+        /<template>(.+)<\/template>/,
+        `<template>${ignoreDirective}${contents}</template>`,
+      );
+
+      lines.splice(currentIndex, 1, newTemplate);
 
       return;
     }

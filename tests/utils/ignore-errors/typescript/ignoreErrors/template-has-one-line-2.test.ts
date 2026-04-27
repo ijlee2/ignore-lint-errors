@@ -30,8 +30,7 @@ test('utils | ignore-errors | typescript | ignoreErrors > template has one line 
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `{{! @glint-expect-error: Cannot find name 'hash'. }}`,
-      `const MyComponent = <template>{{add (hash x=1 y=2)}}</template>;`,
+      `const MyComponent = <template>{{! @glint-expect-error: Cannot find name 'hash'. }}{{add (hash x=1 y=2)}}</template>;`,
     ]),
   );
 });
