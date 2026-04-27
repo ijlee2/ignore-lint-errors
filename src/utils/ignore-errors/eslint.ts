@@ -4,9 +4,9 @@ import { AST } from '@codemod-utils/ast-javascript';
 
 import type { LintError } from '../../types/index.js';
 
-function getIgnoredEslintRules(lineOfCode: string): string[] {
+function getIgnoredRules(lineOfCode: string): string[] {
   const traverse = AST.traverse(true);
-  let ignoredEslintRules: string[] = [];
+  let ignoredRules: string[] = [];
 
   try {
     traverse(lineOfCode, {
@@ -15,7 +15,7 @@ function getIgnoredEslintRules(lineOfCode: string): string[] {
         const comment = (node.value.value as string).trim();
 
         if (comment.startsWith('eslint-disable-next-line')) {
-          ignoredEslintRules = comment
+          ignoredRules = comment
             .replace(/^eslint-disable-next-line\s+/, '')
             .split(',')
             .map((token) => token.trim());
@@ -28,7 +28,7 @@ function getIgnoredEslintRules(lineOfCode: string): string[] {
     // Do nothing
   }
 
-  return ignoredEslintRules;
+  return ignoredRules;
 }
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
@@ -38,14 +38,14 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     const currentIndex = line - 1;
     const previousIndex = Math.max(currentIndex - 1, 0);
 
-    const ignoredEslintRules = getIgnoredEslintRules(lines[previousIndex]!);
+    const ignoredRules = getIgnoredRules(lines[previousIndex]!);
 
-    if (ignoredEslintRules.length === 0) {
+    if (ignoredRules.length === 0) {
       const ignoreDirective = `// eslint-disable-next-line ${message}`;
 
       lines.splice(currentIndex, 0, ignoreDirective);
     } else {
-      const newMessage = [...ignoredEslintRules, ...message.split(', ')]
+      const newMessage = [...ignoredRules, ...message.split(', ')]
         .sort()
         .join(', ');
 
