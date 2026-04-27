@@ -1,0 +1,7 @@
+{
+  "name": "my-v2-app",
+  "version": "0.0.0",
+  "devDependencies": {
+    "eslint": "^9.39.4"
+  }
+}

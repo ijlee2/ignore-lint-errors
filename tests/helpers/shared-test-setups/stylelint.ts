@@ -1,19 +1,19 @@
 import type { CodemodOptions, Options } from '../../../src/types/index.js';
 
 const codemodOptions: CodemodOptions = {
-  linter: 'eslint',
-  projectRoot: 'tmp/my-v2-app',
+  linter: 'stylelint',
+  projectRoot: 'tmp/stylelint',
 };
 
 const options: Options = {
   dependencies: {
     eslint: false,
     glint: false,
-    stylelint: false,
+    stylelint: true,
     typescript: false,
   },
-  linter: 'eslint',
-  projectRoot: 'tmp/my-v2-app',
+  linter: 'stylelint',
+  projectRoot: 'tmp/stylelint',
 };
 
 export { codemodOptions, options };
