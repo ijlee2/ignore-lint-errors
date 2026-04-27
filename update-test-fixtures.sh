@@ -16,9 +16,23 @@
 pnpm build
 
 # Update fixtures
-rm -r "tests/fixtures/my-v2-app/output"
-cp -r "tests/fixtures/my-v2-app/input" "tests/fixtures/my-v2-app/output"
+rm -r "tests/fixtures/eslint/output"
+cp -r "tests/fixtures/eslint/input" "tests/fixtures/eslint/output"
 
 ./dist/bin/ignore-lint-errors.js \
   --linter eslint \
-  --root "tests/fixtures/my-v2-app/output"
+  --root "tests/fixtures/eslint/output"
+
+rm -r "tests/fixtures/stylelint/output"
+cp -r "tests/fixtures/stylelint/input" "tests/fixtures/stylelint/output"
+
+./dist/bin/ignore-lint-errors.js \
+  --linter stylelint \
+  --root "tests/fixtures/stylelint/output"
+
+rm -r "tests/fixtures/typescript/output"
+cp -r "tests/fixtures/typescript/input" "tests/fixtures/typescript/output"
+
+./dist/bin/ignore-lint-errors.js \
+  --linter typescript \
+  --root "tests/fixtures/typescript/output"
