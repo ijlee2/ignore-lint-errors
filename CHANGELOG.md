@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.3
+
+### Patch Changes
+
+- [#23](https://github.com/ijlee2/ignore-lint-errors/pull/23) Ensured a new line after `@glint-expect-error` ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.9.2
 
 ### Patch Changes
