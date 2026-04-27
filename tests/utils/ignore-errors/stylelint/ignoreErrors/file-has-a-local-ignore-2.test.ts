@@ -2,29 +2,30 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { ignoreErrors } from '../../../../../src/utils/ignore-errors/stylelint.js';
 
-test('utils | ignore-errors | stylelint | ignoreErrors > file has errors', function () {
+test('utils | ignore-errors | stylelint | ignoreErrors > file has a local ignore (2)', function () {
   const file = normalizeFile([
     `.container {`,
     `  position: relative;`,
     `}`,
     ``,
-    `.container {`,
-    `  background-color: orange;`,
+    `/* stylelint-disable-line */`,
+    `.container { /*  stylelint-disable-line rule-2,  rule-1  */`,
+    `  background-color: orange; /* stylelint-disable-line rule-3 */`,
     `  overflow: visible !important;`,
     `}`,
   ]);
 
   const newFile = ignoreErrors(file, [
     {
-      line: 7,
+      line: 8,
       message: 'declaration-no-important',
     },
     {
-      line: 6,
+      line: 7,
       message: 'color-named',
     },
     {
-      line: 5,
+      line: 6,
       message: 'no-duplicate-selectors',
     },
   ]);
@@ -36,10 +37,11 @@ test('utils | ignore-errors | stylelint | ignoreErrors > file has errors', funct
       `  position: relative;`,
       `}`,
       ``,
+      `/* stylelint-disable-line */`,
       `/* stylelint-disable-next-line no-duplicate-selectors */`,
-      `.container {`,
+      `.container { /*  stylelint-disable-line rule-2,  rule-1  */`,
       `/* stylelint-disable-next-line color-named */`,
-      `  background-color: orange;`,
+      `  background-color: orange; /* stylelint-disable-line rule-3 */`,
       `/* stylelint-disable-next-line declaration-no-important */`,
       `  overflow: visible !important;`,
       `}`,

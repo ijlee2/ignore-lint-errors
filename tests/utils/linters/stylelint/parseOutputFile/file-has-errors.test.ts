@@ -19,10 +19,10 @@ test('utils | linters | stylelint | parseOutputFile > file has errors', function
           line: 11697,
           column: 21,
           endLine: 11697,
-          endColumn: 28,
-          rule: 'color-no-hex',
+          endColumn: 29,
+          rule: 'color-named',
           severity: 'error',
-          text: 'Unexpected hex color "#a3b4c2" (color-no-hex)',
+          text: 'Unexpected named color "orange" (color-named)',
         },
         {
           line: 3392,
@@ -102,7 +102,7 @@ test('utils | linters | stylelint | parseOutputFile > file has errors', function
         },
         {
           line: 11697,
-          message: 'color-no-hex',
+          message: 'color-named',
         },
         {
           line: 3392,
