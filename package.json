@@ -5,11 +5,18 @@
   "keywords": [
     "codemod",
     "ember-codemod",
-    "emberjs"
+    "emberjs",
+    "eslint",
+    "glint",
+    "stylelint",
+    "typescript"
   ],
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ijlee2/ignore-lint-errors.git"
+  },
   "license": "MIT",
-  "author": "",
+  "author": "Isaac J. Lee",
   "type": "module",
   "main": "dist/src/index.js",
   "bin": "dist/bin/ignore-lint-errors.js",
@@ -39,7 +46,7 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.30.0",
+    "@changesets/cli": "^2.31.0",
     "@codemod-utils/tests": "^3.0.1",
     "@ijlee2-frontend-configs/changesets": "^2.1.0",
     "@ijlee2-frontend-configs/eslint-config-node": "^3.2.0",
@@ -54,7 +61,7 @@
     "prettier": "^3.8.3",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "engines": {
     "node": "22.* || >= 24"
   }
