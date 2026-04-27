@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrors } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrorsFallback } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrors > file has no errors', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsFallback > file has no errors (2)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
@@ -13,7 +13,7 @@ test('utils | ignore-errors | typescript | ignoreErrors > file has no errors', f
     `</template>`,
   ]);
 
-  const newFile = ignoreErrors(file, []);
+  const newFile = ignoreErrorsFallback(file, []);
 
   assert.strictEqual(newFile, file);
 });

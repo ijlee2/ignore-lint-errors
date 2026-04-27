@@ -2,13 +2,13 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { ignoreErrors } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrors > template has one line', function () {
+test('utils | ignore-errors | typescript | ignoreErrors > template has one line (2)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
     `}`,
     ``,
-    `<template>{{add (hash x=1 y=2)}}</template>`,
+    `const MyComponent = <template>{{add (hash x=1 y=2)}}</template>;`,
   ]);
 
   const newFile = ignoreErrors(file, [
@@ -31,7 +31,7 @@ test('utils | ignore-errors | typescript | ignoreErrors > template has one line'
       `}`,
       ``,
       `{{! @glint-expect-error: Cannot find name 'hash'. }}`,
-      `<template>{{add (hash x=1 y=2)}}</template>`,
+      `const MyComponent = <template>{{add (hash x=1 y=2)}}</template>;`,
     ]),
   );
 });

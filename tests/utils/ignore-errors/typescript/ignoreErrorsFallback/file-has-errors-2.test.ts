@@ -2,18 +2,20 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { ignoreErrorsFallback } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has one line', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsFallback > file has errors (2)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
     `}`,
     ``,
-    `<template>{{add (hash x=1 y=2)}}</template>`,
+    `<template>`,
+    `  {{add (hash x=1 y=2)}}`,
+    `</template>`,
   ]);
 
   const newFile = ignoreErrorsFallback(file, [
     {
-      line: 5,
+      line: 6,
       message: `Cannot find name 'hash'.`,
     },
     {
@@ -31,7 +33,9 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has o
       `}`,
       ``,
       `<template>{{! @glint-nocheck }}`,
-      `{{add (hash x=1 y=2)}}</template>`,
+      ``,
+      `  {{add (hash x=1 y=2)}}`,
+      `</template>`,
     ]),
   );
 });
