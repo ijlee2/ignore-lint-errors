@@ -21,12 +21,18 @@ const argv = yargs(hideBin(process.argv))
     describe: 'Where to run the codemod',
     type: 'string',
   })
+  .option('src', {
+    describe: 'Locations of files to lint',
+    string: true,
+    type: 'array',
+  })
   .demandOption(['linter'])
   .parseSync();
 
 const codemodOptions: CodemodOptions = {
   linter: argv['linter'],
   projectRoot: argv['root'] ?? process.cwd(),
+  src: argv['src'],
 };
 
 runCodemod(codemodOptions);

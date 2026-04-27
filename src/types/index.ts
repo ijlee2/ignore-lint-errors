@@ -1,6 +1,7 @@
 type CodemodOptions = {
   linter: Linter;
   projectRoot: string;
+  src: string[] | undefined;
 };
 
 type Dependencies = {
@@ -28,6 +29,7 @@ type Options = {
   dependencies: Dependencies;
   linter: Linter;
   projectRoot: string;
+  src: string[] | undefined;
 };
 
 export type {
