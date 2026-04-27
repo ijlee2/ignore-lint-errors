@@ -31,19 +31,28 @@ export function findLinesWithTemplate(file: string): [number, number][] {
 }
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
-  const linesWithTemplate = findLinesWithTemplate(file);
   const lines = file.split(EOL);
 
+  const linesWithTemplate = findLinesWithTemplate(file);
+
   lintErrors.forEach(({ line, message }) => {
+    const currentIndex = line - 1;
+
     const erroredInTemplate = linesWithTemplate.some(([lineStart, lineEnd]) => {
       return lineStart <= line && line <= lineEnd;
     });
 
-    const ignoreDirective = erroredInTemplate
-      ? `{{! @glint-expect-error: ${message} }}`
-      : `// @ts-expect-error: ${message}`;
+    if (erroredInTemplate) {
+      const ignoreDirective = `{{! @glint-expect-error: ${message} }}`;
 
-    lines.splice(line - 1, 0, ignoreDirective);
+      lines.splice(currentIndex, 0, ignoreDirective);
+
+      return;
+    }
+
+    const ignoreDirective = `// @ts-expect-error: ${message}`;
+
+    lines.splice(currentIndex, 0, ignoreDirective);
   });
 
   return lines.join(EOL);
@@ -54,24 +63,27 @@ export function ignoreErrorsFallback(
   file: string,
   lintErrors: LintError[],
 ): string {
-  const linesWithTemplate = findLinesWithTemplate(file);
   const lines = file.split(EOL);
 
+  const linesWithTemplate = findLinesWithTemplate(file);
   let hasErrorInTemplate = false;
 
   lintErrors.forEach(({ line, message }) => {
+    const currentIndex = line - 1;
+
     const erroredInTemplate = linesWithTemplate.some(([lineStart, lineEnd]) => {
       return lineStart <= line && line <= lineEnd;
     });
 
     if (erroredInTemplate) {
       hasErrorInTemplate = true;
+
       return;
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
 
-    lines.splice(line - 1, 0, ignoreDirective);
+    lines.splice(currentIndex, 0, ignoreDirective);
   });
 
   let newFile = lines.join(EOL);
