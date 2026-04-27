@@ -8,7 +8,6 @@ export function runStylelint(options: Options): void {
 
   const command = [
     './node_modules/.bin/stylelint "**/*.css"',
-    '--allow-empty-input',
     '--formatter json',
     `--output-file ${outputFilePath}`,
     '--quiet',
