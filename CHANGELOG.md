@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+
+### Minor Changes
+
+- [#20](https://github.com/ijlee2/ignore-lint-errors/pull/20) Supported `*.scss` files ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.8.0
 
 ### Minor Changes
