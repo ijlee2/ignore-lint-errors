@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.0
+
+### Minor Changes
+
+- [#16](https://github.com/ijlee2/ignore-lint-errors/pull/16) Allowed codemod to account for eslint-disable's ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#17](https://github.com/ijlee2/ignore-lint-errors/pull/17) Extracted utilities ([@ijlee2](https://github.com/ijlee2))
+- [#15](https://github.com/ijlee2/ignore-lint-errors/pull/15) Supported single-line templates ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.6.0
 
 ### Minor Changes
