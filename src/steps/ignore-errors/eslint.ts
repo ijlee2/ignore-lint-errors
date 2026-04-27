@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { removeFiles } from '@codemod-utils/files';
 
 import type { Options } from '../../types/index.js';
-import { ignoreErrors } from '../../utils/ignore-errors/stylelint.js';
+import { ignoreErrors } from '../../utils/ignore-errors/eslint.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
 
 export function ignoreErrorsFromEslint(options: Options): void {
