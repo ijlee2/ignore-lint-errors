@@ -2,7 +2,7 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { ignoreErrorsFallback } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has one line', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has one line (1)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
@@ -30,8 +30,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has o
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! @glint-nocheck }}`,
-      `{{add (hash x=1 y=2)}}</template>`,
+      `<template>{{! @glint-nocheck }}{{add (hash x=1 y=2)}}</template>`,
     ]),
   );
 });
