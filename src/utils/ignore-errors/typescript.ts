@@ -71,7 +71,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
       const newTemplate = lines[currentIndex]!.replace(
         /<template>(.+)<\/template>/,
-        `<template>${ignoreDirective}${contents}</template>`,
+        [`<template>${ignoreDirective}`, `${contents}</template>`].join(EOL),
       );
 
       lines.splice(currentIndex, 1, newTemplate);
@@ -80,6 +80,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
+
     const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
       ignoreDirective: 'eslint-disable-next-line',
     });
@@ -119,6 +120,7 @@ export function ignoreErrorsFallback(
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
+
     const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
       ignoreDirective: 'eslint-disable-next-line',
     });
