@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2
+
+### Patch Changes
+
+- [#22](https://github.com/ijlee2/ignore-lint-errors/pull/22) Imported ignoreErrors from the correct path ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.9.1
 
 ### Patch Changes
