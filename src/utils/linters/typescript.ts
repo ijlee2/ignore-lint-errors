@@ -1,11 +1,12 @@
 import { EOL } from 'node:os';
 
-import type { FilesWithErrors, LintError } from '../../types/index.js';
+import type { FilePathToData, FileWithErrors } from '../../types/index.js';
+import { getFilesWithErrors } from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/typescript.txt';
 
-export function parseOutputFile(file: string): FilesWithErrors[] {
-  const filePathToData = new Map<string, Map<number, string[]>>();
+function normalize(file: string): FilePathToData {
+  const filePathToData: FilePathToData = new Map();
 
   file.split(EOL).forEach((str) => {
     const matches = str.match(/^(.+)\((\d+),\d+\): error TS\d+: (.+)\.$/) as
@@ -18,52 +19,20 @@ export function parseOutputFile(file: string): FilesWithErrors[] {
 
     const filePath = matches[1];
     const line = Number.parseInt(matches[2]);
-    const message = matches[3];
+    const message = 'Incorrect type';
 
     if (filePathToData.has(filePath)) {
-      if (filePathToData.get(filePath)!.has(line)) {
-        filePathToData.get(filePath)!.get(line)!.push(message);
-      } else {
-        filePathToData.get(filePath)!.set(line, [message]);
-      }
+      filePathToData.get(filePath)!.set(line, message);
     } else {
-      filePathToData.set(filePath, new Map([[line, [message]]]));
+      filePathToData.set(filePath, new Map([[line, message]]));
     }
   });
 
-  const filesWithErrors: FilesWithErrors[] = [];
+  return filePathToData;
+}
 
-  filePathToData.forEach((data, filePath) => {
-    const lintErrors: LintError[] = [];
+export function parseOutputFile(file: string): FileWithErrors[] {
+  const filePathToData = normalize(file);
 
-    data.forEach((_allMessages, line) => {
-      lintErrors.push({
-        line,
-        message: 'Incorrect type',
-      });
-    });
-
-    if (lintErrors.length === 0) {
-      return;
-    }
-
-    lintErrors.sort((a, b) => {
-      if (a.line < b.line) {
-        return 1;
-      }
-
-      if (b.line < a.line) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    filesWithErrors.push({
-      filePath,
-      lintErrors,
-    });
-  });
-
-  return filesWithErrors;
+  return getFilesWithErrors(filePathToData);
 }

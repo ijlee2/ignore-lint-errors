@@ -1,13 +1,13 @@
 import { EOL } from 'node:os';
 
-import { AST as ASTJavaScript } from '@codemod-utils/ast-javascript';
-import { AST as ASTTemplate } from '@codemod-utils/ast-template';
+import { AST } from '@codemod-utils/ast-template';
 import {
   findTemplateTags as upstreamFindTemplateTags,
   updateTemplates,
 } from '@codemod-utils/ast-template-tag';
 
 import type { LintError } from '../../types/index.js';
+import { getIgnoredRules } from './shared/index.js';
 
 type TemplateTag = {
   contents: string;
@@ -42,33 +42,6 @@ function findTemplateTags(file: string): TemplateTag[] {
       lineRange,
     };
   });
-}
-
-function getIgnoredRules(lineOfCode: string): string[] {
-  const traverse = ASTJavaScript.traverse(true);
-  let ignoredRules: string[] = [];
-
-  try {
-    traverse(lineOfCode, {
-      visitComment(node) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const comment = (node.value.value as string).trim();
-
-        if (comment.startsWith('eslint-disable-next-line')) {
-          ignoredRules = comment
-            .replace(/^eslint-disable-next-line\s+/, '')
-            .split(',')
-            .map((token) => token.trim());
-        }
-
-        return false;
-      },
-    });
-  } catch {
-    // Do nothing
-  }
-
-  return ignoredRules;
 }
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
@@ -107,7 +80,9 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
-    const ignoredRules = getIgnoredRules(lines[previousIndex]!);
+    const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
+      ignoreDirective: 'eslint-disable-next-line',
+    });
 
     if (ignoredRules.length === 0) {
       lines.splice(currentIndex, 0, ignoreDirective);
@@ -144,7 +119,9 @@ export function ignoreErrorsFallback(
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
-    const ignoredRules = getIgnoredRules(lines[previousIndex]!);
+    const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
+      ignoreDirective: 'eslint-disable-next-line',
+    });
 
     if (ignoredRules.length === 0) {
       lines.splice(currentIndex, 0, ignoreDirective);
@@ -167,7 +144,7 @@ export function ignoreErrorsFallback(
 }
 
 export function isParseable(file: string): boolean {
-  const traverse = ASTTemplate.traverse();
+  const traverse = AST.traverse();
   let isParseable = true;
 
   try {
