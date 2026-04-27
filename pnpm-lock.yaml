@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@codemod-utils/ast-javascript':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@codemod-utils/ast-template':
         specifier: ^3.0.1
         version: 3.0.1
