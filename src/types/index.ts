@@ -10,10 +10,12 @@ type Dependencies = {
   typescript: boolean;
 };
 
-type FilesWithErrors = {
+type FileWithErrors = {
   filePath: string;
   lintErrors: LintError[];
 };
+
+type FilePathToData = Map<string, Map<number, string>>;
 
 type Linter = 'eslint' | 'stylelint' | 'typescript';
 
@@ -31,7 +33,8 @@ type Options = {
 export type {
   CodemodOptions,
   Dependencies,
-  FilesWithErrors,
+  FilePathToData,
+  FileWithErrors,
   Linter,
   LintError,
   Options,

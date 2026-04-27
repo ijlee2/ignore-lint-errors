@@ -1,6 +1,7 @@
 import { relative, sep } from 'node:path';
 
-import type { FilesWithErrors, LintError } from '../../types/index.js';
+import type { FilePathToData, FileWithErrors } from '../../types/index.js';
+import { getFilesWithErrors } from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/eslint.txt';
 
@@ -51,68 +52,46 @@ type EslintLintResult = {
   warningCount: number;
 };
 
-export function parseOutputFile(
-  file: string,
-  projectRoot: string,
-): FilesWithErrors[] {
-  const filePathToData = new Map<string, Map<number, string[]>>();
+function normalize(file: string, projectRoot: string): FilePathToData {
+  const filePathToData: FilePathToData = new Map();
   const records = JSON.parse(file) as EslintLintResult[];
 
   records.forEach((record) => {
     const { filePath: absoluteFilePath, messages } = record;
-    const data = new Map<number, string[]>();
-
-    messages.forEach(({ line, ruleId }) => {
-      if (data.has(line)) {
-        data.get(line)!.push(ruleId);
-      } else {
-        data.set(line, [ruleId]);
-      }
-    });
 
     const filePath = relative(projectRoot, absoluteFilePath).replaceAll(
       sep,
       '/',
     );
 
+    const lineToRules = new Map<number, string[]>();
+    const data = new Map<number, string>();
+
+    messages.forEach(({ line, ruleId }) => {
+      if (lineToRules.has(line)) {
+        lineToRules.get(line)!.push(ruleId);
+      } else {
+        lineToRules.set(line, [ruleId]);
+      }
+    });
+
+    lineToRules.forEach((rules, line) => {
+      const message = Array.from(new Set(rules.sort())).join(', ');
+
+      data.set(line, message);
+    });
+
     filePathToData.set(filePath, data);
   });
 
-  const filesWithErrors: FilesWithErrors[] = [];
+  return filePathToData;
+}
 
-  filePathToData.forEach((data, filePath) => {
-    const lintErrors: LintError[] = [];
+export function parseOutputFile(
+  file: string,
+  projectRoot: string,
+): FileWithErrors[] {
+  const filePathToData = normalize(file, projectRoot);
 
-    data.forEach((allMessages, line) => {
-      const ruleIds = Array.from(new Set(allMessages.sort()));
-
-      lintErrors.push({
-        line,
-        message: ruleIds.join(', '),
-      });
-    });
-
-    if (lintErrors.length === 0) {
-      return;
-    }
-
-    lintErrors.sort((a, b) => {
-      if (a.line < b.line) {
-        return 1;
-      }
-
-      if (b.line < a.line) {
-        return -1;
-      }
-
-      return 0;
-    });
-
-    filesWithErrors.push({
-      filePath,
-      lintErrors,
-    });
-  });
-
-  return filesWithErrors;
+  return getFilesWithErrors(filePathToData);
 }
