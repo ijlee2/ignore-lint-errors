@@ -91,19 +91,15 @@ export function isParseable(file: string): boolean {
   const traverse = AST.traverse();
   let isParseable = true;
 
-  function parseTemplate(template: string): void {
-    try {
-      traverse(template);
-    } catch {
-      isParseable = false;
-    }
+  try {
+    const templateTags = findTemplateTags(file);
+
+    templateTags.forEach((templateTag) => {
+      traverse(templateTag.contents);
+    });
+  } catch {
+    isParseable = false;
   }
-
-  const templateTags = findTemplateTags(file);
-
-  templateTags.forEach((templateTag) => {
-    parseTemplate(templateTag.contents);
-  });
 
   return isParseable;
 }
