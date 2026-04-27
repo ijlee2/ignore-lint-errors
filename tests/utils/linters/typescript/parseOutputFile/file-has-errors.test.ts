@@ -1,14 +1,9 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { parseOutputFile } from '../../../../src/utils/linters/typescript.js';
+import { parseOutputFile } from '../../../../../src/utils/linters/typescript.js';
 
-test('utils | linters | typescript > parseOutputFile', function () {
-  let outputFile = '';
-  let filesWithErrors = parseOutputFile(outputFile);
-
-  assert.deepStrictEqual(filesWithErrors, []);
-
-  outputFile = normalizeFile([
+test('utils | linters | typescript | parseOutputFile > file has errors', function () {
+  const outputFile = normalizeFile([
     `app/components/example-1.gts(430,13): error TS2554: Expected 0 arguments, but got 1.`,
     `app/components/example-2.gts(20,32): error TS7008: Member 'a' implicitly has an 'any' type.`,
     `app/components/example-2.gts(30,17): error TS2339: Property 'b' does not exist on type 'SomeType'.`,
@@ -23,7 +18,7 @@ test('utils | linters | typescript > parseOutputFile', function () {
     `app/utils/example-4.ts(47,3): error TS2418: Type of computed property's value is '"a"', which is not assignable to type 'b'.`,
   ]);
 
-  filesWithErrors = parseOutputFile(outputFile);
+  const filesWithErrors = parseOutputFile(outputFile);
 
   assert.deepStrictEqual(filesWithErrors, [
     {

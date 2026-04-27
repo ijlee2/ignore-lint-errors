@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsFallback } from '../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrors } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript > ignoreErrorsFallback', function () {
+test('utils | ignore-errors | typescript | ignoreErrors > file has errors', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
@@ -13,7 +13,7 @@ test('utils | ignore-errors | typescript > ignoreErrorsFallback', function () {
     `</template>`,
   ]);
 
-  const lintErrors = [
+  const newFile = ignoreErrors(file, [
     {
       line: 6,
       message: `Cannot find name 'hash'.`,
@@ -22,18 +22,18 @@ test('utils | ignore-errors | typescript > ignoreErrorsFallback', function () {
       line: 1,
       message: `Parameter 'vec' implicitly has an 'any' type.`,
     },
-  ];
+  ]);
 
   assert.strictEqual(
-    ignoreErrorsFallback(file, lintErrors),
+    newFile,
     normalizeFile([
       `// @ts-expect-error: Parameter 'vec' implicitly has an 'any' type.`,
       `function add(vec) {`,
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! @glint-nocheck }}`,
-      ``,
+      `<template>`,
+      `{{! @glint-expect-error: Cannot find name 'hash'. }}`,
       `  {{add (hash x=1 y=2)}}`,
       `</template>`,
     ]),

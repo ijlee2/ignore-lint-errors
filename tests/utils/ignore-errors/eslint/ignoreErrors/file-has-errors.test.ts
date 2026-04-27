@@ -1,15 +1,15 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrors } from '../../../../src/utils/ignore-errors/eslint.js';
+import { ignoreErrors } from '../../../../../src/utils/ignore-errors/eslint.js';
 
-test('utils | ignore-errors | eslint > ignoreErrors', function () {
+test('utils | ignore-errors | eslint | ignoreErrors > file has errors', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
     `}`,
   ]);
 
-  const lintErrors = [
+  const newFile = ignoreErrors(file, [
     {
       line: 2,
       message:
@@ -19,10 +19,10 @@ test('utils | ignore-errors | eslint > ignoreErrors', function () {
       line: 1,
       message: '@typescript-eslint/explicit-function-return-type',
     },
-  ];
+  ]);
 
   assert.strictEqual(
-    ignoreErrors(file, lintErrors),
+    newFile,
     normalizeFile([
       `// eslint-disable-next-line @typescript-eslint/explicit-function-return-type`,
       `function add(vec) {`,

@@ -2,17 +2,12 @@ import { join, sep } from 'node:path';
 
 import { assert, test } from '@codemod-utils/tests';
 
-import { parseOutputFile } from '../../../../src/utils/linters/stylelint.js';
+import { parseOutputFile } from '../../../../../src/utils/linters/stylelint.js';
 
-test('utils | linters | stylelint > parseOutputFile', function () {
-  const projectRoot = join(process.cwd(), 'tmp/my-v2-app').replaceAll(sep, '/');
+test('utils | linters | stylelint | parseOutputFile > file has errors', function () {
+  const projectRoot = join(process.cwd(), 'tmp/stylelint').replaceAll(sep, '/');
 
-  let outputFile = '[]';
-  let filesWithErrors = parseOutputFile(outputFile, projectRoot);
-
-  assert.deepStrictEqual(filesWithErrors, []);
-
-  outputFile = JSON.stringify([
+  const outputFile = JSON.stringify([
     {
       source: `${projectRoot}/app/assets/app.css`,
       deprecations: [],
@@ -95,7 +90,7 @@ test('utils | linters | stylelint > parseOutputFile', function () {
     },
   ]);
 
-  filesWithErrors = parseOutputFile(outputFile, projectRoot);
+  const filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
   assert.deepStrictEqual(filesWithErrors, [
     {

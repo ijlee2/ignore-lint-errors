@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrors } from '../../../../src/utils/ignore-errors/stylelint.js';
+import { ignoreErrors } from '../../../../../src/utils/ignore-errors/stylelint.js';
 
-test('utils | ignore-errors | stylelint > ignoreErrors', function () {
+test('utils | ignore-errors | stylelint | ignoreErrors > file has errors', function () {
   const file = normalizeFile([
     `.container {`,
     `  position: relative;`,
@@ -14,7 +14,7 @@ test('utils | ignore-errors | stylelint > ignoreErrors', function () {
     `}`,
   ]);
 
-  const lintErrors = [
+  const newFile = ignoreErrors(file, [
     {
       line: 7,
       message: 'declaration-no-important',
@@ -27,10 +27,10 @@ test('utils | ignore-errors | stylelint > ignoreErrors', function () {
       line: 5,
       message: 'no-duplicate-selectors',
     },
-  ];
+  ]);
 
   assert.strictEqual(
-    ignoreErrors(file, lintErrors),
+    newFile,
     normalizeFile([
       `.container {`,
       `  position: relative;`,

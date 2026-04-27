@@ -2,17 +2,12 @@ import { join, sep } from 'node:path';
 
 import { assert, test } from '@codemod-utils/tests';
 
-import { parseOutputFile } from '../../../../src/utils/linters/eslint.js';
+import { parseOutputFile } from '../../../../../src/utils/linters/eslint.js';
 
-test('utils | linters | eslint > parseOutputFile', function () {
-  const projectRoot = join(process.cwd(), 'tmp/my-v2-app').replaceAll(sep, '/');
+test('utils | linters | eslint | parseOutputFile > file has errors', function () {
+  const projectRoot = join(process.cwd(), 'tmp/eslint').replaceAll(sep, '/');
 
-  let outputFile = '[]';
-  let filesWithErrors = parseOutputFile(outputFile, projectRoot);
-
-  assert.deepStrictEqual(filesWithErrors, []);
-
-  outputFile = JSON.stringify([
+  const outputFile = JSON.stringify([
     {
       filePath: `${projectRoot}/app/components/example-1.gts`,
       messages: [
@@ -163,7 +158,7 @@ test('utils | linters | eslint > parseOutputFile', function () {
     },
   ]);
 
-  filesWithErrors = parseOutputFile(outputFile, projectRoot);
+  const filesWithErrors = parseOutputFile(outputFile, projectRoot);
 
   assert.deepStrictEqual(filesWithErrors, [
     {

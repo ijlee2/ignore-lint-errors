@@ -1,13 +1,9 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { findLinesWithTemplate } from '../../../../src/utils/ignore-errors/typescript.js';
+import { findLinesWithTemplate } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript > findLinesWithTemplate', function () {
-  let file = '';
-
-  assert.deepStrictEqual(findLinesWithTemplate(file), []);
-
-  file = normalizeFile([
+test('utils | ignore-errors | typescript | findLinesWithTemplate > file has template tags', function () {
+  const file = normalizeFile([
     `import { concat } from '@ember/helper';`,
     ``,
     `const ListItem = <template>`,
