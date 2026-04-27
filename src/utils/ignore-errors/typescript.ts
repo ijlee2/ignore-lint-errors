@@ -1,6 +1,7 @@
 import { EOL } from 'node:os';
 
-import { AST } from '@codemod-utils/ast-template';
+import { AST as ASTJavaScript } from '@codemod-utils/ast-javascript';
+import { AST as ASTTemplate } from '@codemod-utils/ast-template';
 import {
   findTemplateTags as upstreamFindTemplateTags,
   updateTemplates,
@@ -43,6 +44,33 @@ function findTemplateTags(file: string): TemplateTag[] {
   });
 }
 
+function getIgnoredRules(lineOfCode: string): string[] {
+  const traverse = ASTJavaScript.traverse(true);
+  let ignoredRules: string[] = [];
+
+  try {
+    traverse(lineOfCode, {
+      visitComment(node) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const comment = (node.value.value as string).trim();
+
+        if (comment.startsWith('eslint-disable-next-line')) {
+          ignoredRules = comment
+            .replace(/^eslint-disable-next-line\s+/, '')
+            .split(',')
+            .map((token) => token.trim());
+        }
+
+        return false;
+      },
+    });
+  } catch {
+    // Do nothing
+  }
+
+  return ignoredRules;
+}
+
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   const lines = file.split(EOL);
 
@@ -50,6 +78,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
   lintErrors.forEach(({ line, message }) => {
     const currentIndex = line - 1;
+    const previousIndex = Math.max(currentIndex - 1, 0);
 
     const templateTagIndex = templateTags.findIndex(({ lineRange }) => {
       return lineRange.start <= line && line <= lineRange.end;
@@ -78,8 +107,13 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
+    const ignoredRules = getIgnoredRules(lines[previousIndex]!);
 
-    lines.splice(currentIndex, 0, ignoreDirective);
+    if (ignoredRules.length === 0) {
+      lines.splice(currentIndex, 0, ignoreDirective);
+    } else {
+      lines.splice(previousIndex, 0, ignoreDirective);
+    }
   });
 
   return lines.join(EOL);
@@ -97,6 +131,7 @@ export function ignoreErrorsFallback(
 
   lintErrors.forEach(({ line, message }) => {
     const currentIndex = line - 1;
+    const previousIndex = Math.max(currentIndex - 1, 0);
 
     const erroredInTemplate = templateTags.some(({ lineRange }) => {
       return lineRange.start <= line && line <= lineRange.end;
@@ -109,8 +144,13 @@ export function ignoreErrorsFallback(
     }
 
     const ignoreDirective = `// @ts-expect-error: ${message}`;
+    const ignoredRules = getIgnoredRules(lines[previousIndex]!);
 
-    lines.splice(currentIndex, 0, ignoreDirective);
+    if (ignoredRules.length === 0) {
+      lines.splice(currentIndex, 0, ignoreDirective);
+    } else {
+      lines.splice(previousIndex, 0, ignoreDirective);
+    }
   });
 
   let newFile = lines.join(EOL);
@@ -127,7 +167,7 @@ export function ignoreErrorsFallback(
 }
 
 export function isParseable(file: string): boolean {
-  const traverse = AST.traverse();
+  const traverse = ASTTemplate.traverse();
   let isParseable = true;
 
   try {
