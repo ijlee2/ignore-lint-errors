@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.5.0
+
+### Minor Changes
+
+- [#13](https://github.com/ijlee2/ignore-lint-errors/pull/13) Allowed codemod to merge eslint rules ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#12](https://github.com/ijlee2/ignore-lint-errors/pull/12) Updated isParseable to consider all cases where code can't be parsed ([@ijlee2](https://github.com/ijlee2))
+- [#11](https://github.com/ijlee2/ignore-lint-errors/pull/11) Reorganized tests ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.4.2
 
 ### Patch Changes
