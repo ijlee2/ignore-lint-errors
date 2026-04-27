@@ -34,7 +34,7 @@ Step 2. Fix formatting.
 
 ```sh
 # Run prettier
-pnpm format
+pnpm prettier . --write
 ```
 
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0
+
+### Minor Changes
+
+- [#14](https://github.com/ijlee2/ignore-lint-errors/pull/14) Allowed codemod to merge stylelint rules ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.5.0
 
 ### Minor Changes
