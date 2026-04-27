@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+### Patch Changes
+
+- [#21](https://github.com/ijlee2/ignore-lint-errors/pull/21) Updated fields in package.json ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.9.0
 
 ### Minor Changes
