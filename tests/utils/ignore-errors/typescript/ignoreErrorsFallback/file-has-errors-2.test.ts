@@ -33,7 +33,6 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > file has error
       `}`,
       ``,
       `<template>{{! @glint-nocheck }}`,
-      ``,
       `  {{add (hash x=1 y=2)}}`,
       `</template>`,
     ]),

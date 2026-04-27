@@ -30,8 +30,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has o
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `const MyComponent = <template>{{! @glint-nocheck }}`,
-      `{{add (hash x=1 y=2)}}</template>;`,
+      `const MyComponent = <template>{{! @glint-nocheck }}{{add (hash x=1 y=2)}}</template>;`,
     ]),
   );
 });

@@ -30,8 +30,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has o
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! @glint-nocheck }}`,
-      `{{add (hash x=1 y=2)}}</template>`,
+      `<template>{{! @glint-nocheck }}{{add (hash x=1 y=2)}}</template>`,
     ]),
   );
 });

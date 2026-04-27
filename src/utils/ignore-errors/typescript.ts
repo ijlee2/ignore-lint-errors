@@ -80,7 +80,7 @@ export function ignoreErrorsFallback(
     newFile = updateTemplates(newFile, (code) => {
       const ignoreDirective = '{{! @glint-nocheck }}';
 
-      return [ignoreDirective, code].join(EOL);
+      return [ignoreDirective, code].join('');
     });
   }
 
