@@ -9,7 +9,7 @@ test('utils | ignore-errors | stylelint | ignoreErrors > file has no errors', fu
     `}`,
     ``,
     `.container {`,
-    `  background-color: #a3b4c2;`,
+    `  background-color: orange;`,
     `  overflow: visible !important;`,
     `}`,
   ]);
