@@ -13,15 +13,15 @@ export function getIgnoredRules(
 
   try {
     traverse(lineOfCode, {
-      visitComment(node) {
+      visitComment(path) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const comment = (node.value.value as string).trim();
+        const comment = (path.value.value as string).trim();
 
         if (comment.startsWith(options.ignoreDirective)) {
           ignoredRules = comment
             .replace(new RegExp(`^${options.ignoreDirective}\\s+`, 'g'), '')
             .split(',')
-            .map((token) => token.trim());
+            .map((token: string) => token.trim());
         }
 
         return false;
