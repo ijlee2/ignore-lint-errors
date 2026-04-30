@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.10.0
+
+### Minor Changes
+
+- [#24](https://github.com/ijlee2/ignore-lint-errors/pull/24) Fixed lint errors ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#25](https://github.com/ijlee2/ignore-lint-errors/pull/25) Updated dependencies ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.9.3
 
 ### Patch Changes
