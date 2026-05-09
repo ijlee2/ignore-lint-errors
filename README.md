@@ -9,7 +9,7 @@ _Codemod to ignore lint errors per line_
 
 In large production projects, ignoring lint errors for existing code is the most pragmatic, quickest approach to complete these tasks:
 
-- Introduce a new lint rule.
+- Introduce a lint rule.
 - Update a linter to the next minor or major version.
 - Migrate code to a different format, e.g. convert `*.{gjs,js}` (JavaScript) to `*.{gts,ts}` (TypeScript).
 
