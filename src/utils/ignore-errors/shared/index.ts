@@ -8,11 +8,10 @@ export function getIgnoredRules(
   lineOfCode: string,
   options: Options,
 ): string[] {
-  const traverse = AST.traverse(true);
   let ignoredRules: string[] = [];
 
   try {
-    traverse(lineOfCode, {
+    AST.traverse(lineOfCode, {
       visitComment(path) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const comment = (path.value.value as string).trim();
