@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+### Minor Changes
+
+- [#28](https://github.com/ijlee2/ignore-lint-errors/pull/28) Updated dependencies (`@codemod-utils/ast-javascript` and `@codemod-utils/ast-template` to v4) ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.10.2
 
 ### Patch Changes
