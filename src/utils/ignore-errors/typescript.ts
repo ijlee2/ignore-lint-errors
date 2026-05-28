@@ -146,14 +146,13 @@ export function ignoreErrorsFallback(
 }
 
 export function isParseable(file: string): boolean {
-  const traverse = AST.traverse();
   let isParseable = true;
 
   try {
     const templateTags = findTemplateTags(file);
 
     templateTags.forEach(({ contents }) => {
-      traverse(contents);
+      AST.traverse(contents);
     });
   } catch {
     isParseable = false;
