@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.0
+
+### Major Changes
+
+- [#32](https://github.com/ijlee2/ignore-lint-errors/pull/32) Marked stable release ([@ijlee2](https://github.com/ijlee2))
+
+### Minor Changes
+
+- [#31](https://github.com/ijlee2/ignore-lint-errors/pull/31) Delegated number of concurrency to eslint ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#30](https://github.com/ijlee2/ignore-lint-errors/pull/30) Updated dependencies ([@ijlee2](https://github.com/ijlee2))
+
 ## 0.11.0
 
 ### Minor Changes
