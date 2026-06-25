@@ -46,6 +46,9 @@ You must pass `--linter` to indicate which linter to run.
 # Run eslint
 pnpx ignore-lint-errors --linter eslint
 
+# Run oxlint
+pnpx ignore-lint-errors --linter oxlint
+
 # Run stylelint
 pnpx ignore-lint-errors --linter stylelint
 
@@ -83,6 +86,17 @@ pnpx ignore-lint-errors --linter eslint --src app/{components,templates}/**/*.gt
 ```
 
 ```sh
+# oxlint supports files
+pnpx ignore-lint-errors --linter oxlint --src app/components/example-1.gts app/templates/example-2.gts
+
+# oxlint supports directories
+pnpx ignore-lint-errors --linter oxlint --src app tests
+
+# oxlint supports globs
+pnpx ignore-lint-errors --linter oxlint --src app/{components,templates}/**/*.gts
+```
+
+```sh
 # stylelint supports files
 pnpx ignore-lint-errors --linter stylelint --src app/components/example-1.module.css app/templates/example-2.module.css
 
@@ -113,7 +127,7 @@ pnpm build
 ## Compatibility
 
 - Node.js v22 or above
-- Tested against `eslint@v9`, `glint@v2`, `stylelint@v17`, `typescript@v5`
+- Tested against `eslint@v9`, `glint@v2`, `oxlint@v1`, `stylelint@v17`, `typescript@v5`
 
 
 ## Contributing

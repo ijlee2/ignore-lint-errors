@@ -1,8 +1,8 @@
 import type { CodemodOptions, Options } from '../../../src/types/index.js';
 
 const codemodOptions: CodemodOptions = {
-  linter: 'stylelint',
-  projectRoot: 'tmp/stylelint',
+  linter: 'oxlint',
+  projectRoot: 'tmp/oxlint',
   src: undefined,
 };
 
@@ -10,12 +10,12 @@ const options: Options = {
   dependencies: {
     eslint: false,
     glint: false,
-    oxlint: false,
-    stylelint: true,
+    oxlint: true,
+    stylelint: false,
     typescript: false,
   },
-  linter: 'stylelint',
-  projectRoot: 'tmp/stylelint',
+  linter: 'oxlint',
+  projectRoot: 'tmp/oxlint',
   src: undefined,
 };
 

@@ -1,6 +1,7 @@
 import type { Options } from '../types/index.js';
 import {
   ignoreErrorsFromEslint,
+  ignoreErrorsFromOxlint,
   ignoreErrorsFromStylelint,
   ignoreErrorsFromTypescript,
 } from './ignore-errors/index.js';
@@ -12,6 +13,14 @@ export function ignoreErrors(options: Options): void {
     case 'eslint': {
       if (dependencies.eslint) {
         ignoreErrorsFromEslint(options);
+      }
+
+      break;
+    }
+
+    case 'oxlint': {
+      if (dependencies.oxlint) {
+        ignoreErrorsFromOxlint(options);
       }
 
       break;

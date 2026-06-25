@@ -13,7 +13,7 @@ process.title = 'ignore-lint-errors';
 // Set codemod options
 const argv = yargs(hideBin(process.argv))
   .option('linter', {
-    choices: ['eslint', 'stylelint', 'typescript'] as const,
+    choices: ['eslint', 'oxlint', 'stylelint', 'typescript'] as const,
     describe: 'Linter to run',
     type: 'string',
   })

@@ -7,6 +7,7 @@ type CodemodOptions = {
 type Dependencies = {
   eslint: boolean;
   glint: boolean;
+  oxlint: boolean;
   stylelint: boolean;
   typescript: boolean;
 };
@@ -18,7 +19,7 @@ type FileWithErrors = {
 
 type FilePathToData = Map<string, Map<number, string>>;
 
-type Linter = 'eslint' | 'stylelint' | 'typescript';
+type Linter = 'eslint' | 'oxlint' | 'stylelint' | 'typescript';
 
 type LintError = {
   line: number;
