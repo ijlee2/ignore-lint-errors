@@ -23,6 +23,13 @@ cp -r "tests/fixtures/eslint/input" "tests/fixtures/eslint/output"
   --linter eslint \
   --root "tests/fixtures/eslint/output"
 
+rm -r "tests/fixtures/oxlint/output"
+cp -r "tests/fixtures/oxlint/input" "tests/fixtures/oxlint/output"
+
+./dist/bin/ignore-lint-errors.js \
+  --linter oxlint \
+  --root "tests/fixtures/oxlint/output"
+
 rm -r "tests/fixtures/stylelint/output"
 cp -r "tests/fixtures/stylelint/input" "tests/fixtures/stylelint/output"
 
