@@ -1,7 +1,5 @@
 import { execSync } from 'node:child_process';
 
-import { findFiles } from '@codemod-utils/files';
-
 import type { Options } from '../../types/index.js';
 import { outputFilePath } from '../../utils/linters/eslint.js';
 
@@ -26,14 +24,7 @@ function getConcurrencyOption(options: Options): string {
     return '';
   }
 
-  const filePaths = findFiles('**/*.{gjs,gts,js,ts}', {
-    ignoreList: ['{dist,node_modules}/**/*', '**/*.d.ts'],
-    projectRoot,
-  });
-
-  const concurrency = Math.max(Math.ceil(Math.log10(filePaths.length)), 1);
-
-  return `--concurrency ${concurrency}`;
+  return '--concurrency auto';
 }
 
 function getSrc(options: Options): string {
