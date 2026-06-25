@@ -6,17 +6,17 @@ import { getFilesWithErrors } from './shared/index.js';
 export const outputFilePath = '.ignore-lint-errors/eslint.txt';
 
 // https://github.com/eslint/eslint/blob/v9.39.4/lib/types/index.d.ts
-type EslintFix = {
+type Fix = {
   range: [number, number];
   text: string;
 };
 
-type EslintLintMessage = {
+type Message = {
   column: number;
   endColumn?: number | undefined;
   endLine?: number | undefined;
   fatal?: true | undefined;
-  fix?: EslintFix | undefined;
+  fix?: Fix | undefined;
   line: number;
   message: string;
   messageId?: string | undefined;
@@ -26,23 +26,23 @@ type EslintLintMessage = {
   suggestions?:
     | {
         desc: string;
-        fix: EslintFix;
+        fix: Fix;
         messageId?: string | undefined;
       }[]
     | undefined;
 };
 
-type EslintLintResult = {
+type EslintResult = {
   errorCount: number;
   fatalErrorCount: number;
   filePath: string;
   fixableErrorCount: number;
   fixableWarningCount: number;
-  messages: EslintLintMessage[];
+  messages: Message[];
   output?: string | undefined;
   source?: string | undefined;
   stats: unknown;
-  suppressedMessages: (EslintLintMessage & {
+  suppressedMessages: (Message & {
     suppressions: {
       justification: string;
       kind: string;
@@ -54,7 +54,7 @@ type EslintLintResult = {
 
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const records = JSON.parse(file) as EslintLintResult[];
+  const records = JSON.parse(file) as EslintResult[];
 
   records.forEach((record) => {
     const { filePath: absoluteFilePath, messages } = record;
