@@ -13,6 +13,7 @@ function findDependencies(projectRoot: string): Dependencies {
   return {
     eslint: projectDependencies.has('eslint'),
     glint: projectDependencies.has('@glint/ember-tsc'),
+    oxlint: projectDependencies.has('oxlint'),
     stylelint: projectDependencies.has('stylelint'),
     typescript: projectDependencies.has('typescript'),
   };

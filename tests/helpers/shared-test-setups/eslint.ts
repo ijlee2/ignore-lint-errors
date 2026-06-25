@@ -10,6 +10,7 @@ const options: Options = {
   dependencies: {
     eslint: true,
     glint: false,
+    oxlint: false,
     stylelint: false,
     typescript: false,
   },
