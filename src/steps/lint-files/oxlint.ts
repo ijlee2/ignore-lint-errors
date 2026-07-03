@@ -1,5 +1,3 @@
-import { execSync } from 'node:child_process';
-
 import type { Options } from '../../types/index.js';
 import { outputFilePath } from '../../utils/linters/oxlint.js';
 
@@ -13,20 +11,18 @@ function getSrc(options: Options): string {
   return src.map((token) => `"${token}"`).join(' ');
 }
 
-export function runOxlint(options: Options): void {
-  const { projectRoot } = options;
+export function getCommandOxlint(options: Options): string | undefined {
+  const { dependencies } = options;
 
-  const command = [
+  if (!dependencies.oxlint) {
+    return undefined;
+  }
+
+  return [
     './node_modules/.bin/oxlint',
     getSrc(options),
     '--format json',
     '--quiet',
     `> ${outputFilePath}`,
   ].join(' ');
-
-  try {
-    execSync(command, { cwd: projectRoot });
-  } catch {
-    // Do nothing
-  }
 }

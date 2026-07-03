@@ -1,5 +1,3 @@
-import { execSync } from 'node:child_process';
-
 import type { Options } from '../../types/index.js';
 import { outputFilePath } from '../../utils/linters/stylelint.js';
 
@@ -13,10 +11,14 @@ function getSrc(options: Options): string {
   return src.map((token) => `"${token}"`).join(' ');
 }
 
-export function runStylelint(options: Options): void {
-  const { projectRoot } = options;
+export function getCommandStylelint(options: Options): string | undefined {
+  const { dependencies } = options;
 
-  const command = [
+  if (!dependencies.stylelint) {
+    return undefined;
+  }
+
+  return [
     './node_modules/.bin/stylelint',
     getSrc(options),
     '--formatter json',
@@ -24,10 +26,4 @@ export function runStylelint(options: Options): void {
     '--quiet',
     '2>/dev/null', // Suppress output to process.stderr
   ].join(' ');
-
-  try {
-    execSync(command, { cwd: projectRoot });
-  } catch {
-    // Do nothing
-  }
 }

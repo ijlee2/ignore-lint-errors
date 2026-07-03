@@ -7,38 +7,26 @@ import {
 } from './ignore-errors/index.js';
 
 export function ignoreErrors(options: Options): void {
-  const { dependencies, linter } = options;
+  const { linter } = options;
 
   switch (linter) {
     case 'eslint': {
-      if (dependencies.eslint) {
-        ignoreErrorsFromEslint(options);
-      }
-
+      ignoreErrorsFromEslint(options);
       break;
     }
 
     case 'oxlint': {
-      if (dependencies.oxlint) {
-        ignoreErrorsFromOxlint(options);
-      }
-
+      ignoreErrorsFromOxlint(options);
       break;
     }
 
     case 'stylelint': {
-      if (dependencies.stylelint) {
-        ignoreErrorsFromStylelint(options);
-      }
-
+      ignoreErrorsFromStylelint(options);
       break;
     }
 
     case 'typescript': {
-      if (dependencies.typescript) {
-        ignoreErrorsFromTypescript(options);
-      }
-
+      ignoreErrorsFromTypescript(options);
       break;
     }
   }

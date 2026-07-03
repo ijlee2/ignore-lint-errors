@@ -15,7 +15,11 @@ import {
 } from '../../utils/linters/typescript.js';
 
 export function ignoreErrorsFromTypescript(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.typescript) {
+    return;
+  }
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
   const filesWithErrors = parseOutputFile(outputFile);

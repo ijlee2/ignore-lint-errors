@@ -37,10 +37,14 @@ function getSrc(options: Options): string {
   return src.map((token) => `"${token}"`).join(' ');
 }
 
-export function runEslint(options: Options): void {
-  const { projectRoot } = options;
+export function getCommandEslint(options: Options): string | undefined {
+  const { dependencies } = options;
 
-  const command = [
+  if (!dependencies.eslint) {
+    return undefined;
+  }
+
+  return [
     './node_modules/.bin/eslint',
     getSrc(options),
     getConcurrencyOption(options),
@@ -48,10 +52,4 @@ export function runEslint(options: Options): void {
     `--output-file ${outputFilePath}`,
     '--quiet',
   ].join(' ');
-
-  try {
-    execSync(command, { cwd: projectRoot });
-  } catch {
-    // Do nothing
-  }
 }
