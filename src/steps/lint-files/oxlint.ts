@@ -14,7 +14,11 @@ function getSrc(options: Options): string {
 }
 
 export function runOxlint(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.oxlint) {
+    return;
+  }
 
   const command = [
     './node_modules/.bin/oxlint',

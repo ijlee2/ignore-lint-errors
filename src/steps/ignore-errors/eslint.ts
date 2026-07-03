@@ -8,7 +8,11 @@ import { ignoreErrors } from '../../utils/ignore-errors/eslint.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
 
 export function ignoreErrorsFromEslint(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.eslint) {
+    return;
+  }
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
   const filesWithErrors = parseOutputFile(outputFile, projectRoot);

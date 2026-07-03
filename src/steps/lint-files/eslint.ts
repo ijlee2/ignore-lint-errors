@@ -38,7 +38,11 @@ function getSrc(options: Options): string {
 }
 
 export function runEslint(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.eslint) {
+    return;
+  }
 
   const command = [
     './node_modules/.bin/eslint',

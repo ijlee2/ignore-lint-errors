@@ -11,7 +11,11 @@ import {
 } from '../../utils/linters/stylelint.js';
 
 export function ignoreErrorsFromStylelint(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.stylelint) {
+    return;
+  }
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
   const filesWithErrors = parseOutputFile(outputFile, projectRoot);

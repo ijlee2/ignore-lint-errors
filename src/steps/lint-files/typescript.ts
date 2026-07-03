@@ -6,6 +6,10 @@ import { outputFilePath } from '../../utils/linters/typescript.js';
 export function runTypescript(options: Options): void {
   const { dependencies, projectRoot } = options;
 
+  if (!dependencies.typescript) {
+    return;
+  }
+
   const command = dependencies.glint
     ? `./node_modules/.bin/ember-tsc > ${outputFilePath}`
     : `./node_modules/.bin/tsc > ${outputFilePath}`;

@@ -8,7 +8,11 @@ import { ignoreErrors } from '../../utils/ignore-errors/oxlint.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/oxlint.js';
 
 export function ignoreErrorsFromOxlint(options: Options): void {
-  const { projectRoot } = options;
+  const { dependencies, projectRoot } = options;
+
+  if (!dependencies.oxlint) {
+    return;
+  }
 
   const outputFile = readFileSync(join(projectRoot, outputFilePath), 'utf8');
   const filesWithErrors = parseOutputFile(outputFile);
