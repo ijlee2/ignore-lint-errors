@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.1
+
+### Patch Changes
+
+- [#36](https://github.com/ijlee2/ignore-lint-errors/pull/36) Updated dependencies (eslint@v10, typescript@v6) ([@ijlee2](https://github.com/ijlee2))
+- [#35](https://github.com/ijlee2/ignore-lint-errors/pull/35) Improved separation of concerns ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.1.0
 
 ### Minor Changes
