@@ -1,52 +1,12 @@
 import { EOL } from 'node:os';
 
-import { AST } from '@codemod-utils/ast-template';
-import {
-  findTemplateTags as upstreamFindTemplateTags,
-  updateTemplates,
-} from '@codemod-utils/ast-template-tag';
+import { updateTemplates } from '@codemod-utils/ast-template-tag';
 
 import type { LintError } from '../../types/index.js';
-import { getIgnoredRules } from './shared/index.js';
-
-type TemplateTag = {
-  contents: string;
-  lineRange: {
-    end: number;
-    start: number;
-  };
-};
-
-function findTemplateTags(file: string): TemplateTag[] {
-  function getLOC(file: string): number {
-    const matches = file.match(/\r?\n/g);
-
-    return (matches ?? []).length;
-  }
-
-  const templateTags = upstreamFindTemplateTags(file);
-
-  return templateTags.map((templateTag) => {
-    const { contents, range } = templateTag;
-
-    const lineStart = getLOC(file.substring(0, range.startChar)) + 1;
-    const lineEnd = getLOC(file.substring(0, range.endChar)) + 1;
-
-    const lineRange = {
-      end: lineEnd,
-      start: lineStart,
-    };
-
-    return {
-      contents,
-      lineRange,
-    };
-  });
-}
+import { findTemplateTags, getIgnoredRules } from './shared/index.js';
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   const lines = file.split(EOL);
-
   const templateTags = findTemplateTags(file);
 
   lintErrors.forEach(({ line, message }) => {
@@ -60,35 +20,33 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     const erroredInTemplate = templateTagIndex >= 0;
 
     if (erroredInTemplate) {
-      const ignoreDirective = `{{! @glint-expect-error: ${message} }}`;
+      const comment = `{{! @glint-expect-error: ${message} }}`;
       const { contents, lineRange } = templateTags[templateTagIndex]!;
 
-      if (lineRange.start !== lineRange.end) {
-        lines.splice(currentIndex, 0, ignoreDirective);
+      if (lineRange.start === lineRange.end) {
+        const newTemplate = lines[currentIndex]!.replace(
+          /<template>(.+)<\/template>/,
+          [`<template>${comment}`, `${contents}</template>`].join(EOL),
+        );
 
-        return;
+        lines.splice(currentIndex, 1, newTemplate);
+      } else {
+        lines.splice(currentIndex, 0, comment);
       }
-
-      const newTemplate = lines[currentIndex]!.replace(
-        /<template>(.+)<\/template>/,
-        [`<template>${ignoreDirective}`, `${contents}</template>`].join(EOL),
-      );
-
-      lines.splice(currentIndex, 1, newTemplate);
 
       return;
     }
 
-    const ignoreDirective = `// @ts-expect-error: ${message}`;
+    const comment = `// @ts-expect-error: ${message}`;
 
     const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
       ignoreDirective: 'eslint-disable-next-line',
     });
 
     if (ignoredRules.length === 0) {
-      lines.splice(currentIndex, 0, ignoreDirective);
+      lines.splice(currentIndex, 0, comment);
     } else {
-      lines.splice(previousIndex, 0, ignoreDirective);
+      lines.splice(previousIndex, 0, comment);
     }
   });
 
@@ -115,20 +73,19 @@ export function ignoreErrorsFallback(
 
     if (erroredInTemplate) {
       hasErrorInTemplate = true;
-
       return;
     }
 
-    const ignoreDirective = `// @ts-expect-error: ${message}`;
+    const comment = `// @ts-expect-error: ${message}`;
 
     const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
       ignoreDirective: 'eslint-disable-next-line',
     });
 
     if (ignoredRules.length === 0) {
-      lines.splice(currentIndex, 0, ignoreDirective);
+      lines.splice(currentIndex, 0, comment);
     } else {
-      lines.splice(previousIndex, 0, ignoreDirective);
+      lines.splice(previousIndex, 0, comment);
     }
   });
 
@@ -136,27 +93,11 @@ export function ignoreErrorsFallback(
 
   if (hasErrorInTemplate) {
     newFile = updateTemplates(newFile, (code) => {
-      const ignoreDirective = '{{! @glint-nocheck }}';
+      const comment = '{{! @glint-nocheck }}';
 
-      return [ignoreDirective, code].join('');
+      return [comment, code].join('');
     });
   }
 
   return newFile;
-}
-
-export function isParseable(file: string): boolean {
-  let isParseable = true;
-
-  try {
-    const templateTags = findTemplateTags(file);
-
-    templateTags.forEach(({ contents }) => {
-      AST.traverse(contents);
-    });
-  } catch {
-    isParseable = false;
-  }
-
-  return isParseable;
 }

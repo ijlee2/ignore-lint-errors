@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { isParseable } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { areTemplateTagsValid } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | typescript | isParseable > file is parseable (2)', function () {
+test('utils | ignore-errors | shared | areTemplateTagsValid > file is parseable (2)', function () {
   const file = normalizeFile([
     `import { concat } from '@ember/helper';`,
     ``,
@@ -27,5 +27,5 @@ test('utils | ignore-errors | typescript | isParseable > file is parseable (2)',
     `export default List;`,
   ]);
 
-  assert.strictEqual(isParseable(file), true);
+  assert.strictEqual(areTemplateTagsValid(file), true);
 });

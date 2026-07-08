@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { isParseable } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { areTemplateTagsValid } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | typescript | isParseable > file is not parseable (1)', function () {
+test('utils | ignore-errors | shared | areTemplateTagsValid > file is not parseable (1)', function () {
   const file = normalizeFile([
     `const ListItem = <template>`,
     `  <li>`,
@@ -25,5 +25,5 @@ test('utils | ignore-errors | typescript | isParseable > file is not parseable (
     `export default List;`,
   ]);
 
-  assert.strictEqual(isParseable(file), false);
+  assert.strictEqual(areTemplateTagsValid(file), false);
 });
