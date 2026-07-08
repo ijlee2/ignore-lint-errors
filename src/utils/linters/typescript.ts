@@ -10,8 +10,7 @@ function normalize(file: string): FilePathToData {
 
   file.split(EOL).forEach((str) => {
     const matches = str.match(/^(.+)\((\d+),\d+\): error TS\d+: (.+)\.$/) as
-      | [ignore: unknown, filePath: string, line: string, message: string]
-      | null;
+      [ignore: unknown, filePath: string, line: string, message: string] | null;
 
     if (matches === null) {
       return;
