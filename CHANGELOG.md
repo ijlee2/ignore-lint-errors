@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.2
+
+### Patch Changes
+
+- [#37](https://github.com/ijlee2/ignore-lint-errors/pull/37) Skipped Oxlint parser diagnostics that do not have a rule ID. ([@slavb18](https://github.com/slavb18))
+
 ## 1.1.1
 
 ### Patch Changes
