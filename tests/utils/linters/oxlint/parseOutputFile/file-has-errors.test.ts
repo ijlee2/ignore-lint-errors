@@ -6,6 +6,16 @@ test('utils | linters | oxlint | parseOutputFile > file has errors', function ()
   const outputFile = JSON.stringify({
     diagnostics: [
       {
+        message:
+          'Expected a semicolon or an implicit semicolon after a statement, but found none',
+        severity: 'error',
+        causes: [],
+        help: 'Try inserting a semicolon here',
+        filename: 'test-bug.ts',
+        labels: [{ span: { offset: 5, length: 0, line: 1, column: 6 } }],
+        related: [],
+      },
+      {
         message: 'Unsafe assignment of an any value.',
         code: 'typescript(no-unsafe-assignment)',
         severity: 'error',
