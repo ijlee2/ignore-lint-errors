@@ -14,7 +14,7 @@ type Label = {
 
 type Diagnostic = {
   causes: string[];
-  code: string;
+  code?: string;
   filename: string;
   labels: [Label];
   message: string;
@@ -55,6 +55,10 @@ function normalize(file: string): FilePathToData {
 
   diagnostics.forEach((diagnostic) => {
     const { code, filename: filePath, labels } = diagnostic;
+
+    if (code === undefined) {
+      return;
+    }
 
     const line = labels[0].span.line;
     const ruleId = extractRuleId(code);
