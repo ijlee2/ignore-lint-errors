@@ -34,7 +34,7 @@
     "lint:types": "tsc --noEmit",
     "prepare": "pnpm build",
     "release:prepare": "changeset version",
-    "release:publish": "pnpm build && pnpm publish",
+    "release:publish": "pnpm build && changeset publish",
     "test": "sh build.sh --test && mt dist-for-testing --quiet"
   },
   "dependencies": {
