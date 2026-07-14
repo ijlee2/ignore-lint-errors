@@ -1,0 +1,29 @@
+import { assert, normalizeFile, test } from '@codemod-utils/tests';
+
+import { findTemplateTags } from '../../../../../src/utils/ignore-errors/shared/index.js';
+
+test('utils | ignore-errors | shared | findTemplateTags > file is not parseable (2)', function () {
+  const file = normalizeFile([
+    `{{! @glint-expect-error: Incorrect type }}`,
+    `const ListItem = <template><li>{{concat "Item " @index}}</li></template>;`,
+    ``,
+    `const List = <template>`,
+    `  <ul>`,
+    `    <ListItem @index={{1}} />`,
+    `    <ListItem @index={{2}} />`,
+    `    <ListItem @index={{3}} />`,
+    `  </ul>`,
+    `</template>;`,
+    ``,
+    `export default List;`,
+  ]);
+
+  assert.throws(
+    () => {
+      findTemplateTags(file);
+    },
+    () => {
+      return true;
+    },
+  );
+});

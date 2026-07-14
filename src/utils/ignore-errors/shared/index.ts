@@ -67,12 +67,22 @@ export function getIgnoredRules(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const comment = (path.value.value as string).trim();
 
-        if (comment.startsWith(options.ignoreDirective)) {
-          ignoredRules = comment
-            .replace(new RegExp(`^${options.ignoreDirective}\\s+`, 'g'), '')
-            .split(',')
-            .map((token: string) => token.trim());
+        if (!comment.startsWith(options.ignoreDirective)) {
+          return false;
         }
+
+        ignoredRules = comment
+          .replace(new RegExp(`^${options.ignoreDirective}\\s*`, 'g'), '')
+          .split(',')
+          .reduce<string[]>((accumulator, token) => {
+            const rule = token.trim();
+
+            if (rule) {
+              accumulator.push(rule);
+            }
+
+            return accumulator;
+          }, []);
 
         return false;
       },
