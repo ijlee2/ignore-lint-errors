@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.3
+
+### Patch Changes
+
+- [#39](https://github.com/ijlee2/ignore-lint-errors/pull/39) Updated pnpm to v11 ([@ijlee2](https://github.com/ijlee2))
+- [#38](https://github.com/ijlee2/ignore-lint-errors/pull/38) Added tests. Handled an edge case for `getIgnoredRules`. ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.1.2
 
 ### Patch Changes
