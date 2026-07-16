@@ -7,9 +7,10 @@ export const outputFilePath = '.ignore-lint-errors/typescript.txt';
 
 function normalize(file: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
+  const results = file.split(EOL);
 
-  file.split(EOL).forEach((str) => {
-    const matches = str.match(/^(.+)\((\d+),\d+\): error TS\d+: (.+)\.$/) as
+  results.forEach((result) => {
+    const matches = result.match(/^(.+)\((\d+),\d+\): error TS\d+: (.+)\.$/) as
       [ignore: unknown, filePath: string, line: string, message: string] | null;
 
     if (matches === null) {

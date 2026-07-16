@@ -1,22 +1,24 @@
-import { relative, sep } from 'node:path';
-
 import type { FilePathToData, FileWithErrors } from '../../types/index.js';
-import { getFilesWithErrors } from './shared/index.js';
+import {
+  getFilesWithErrors,
+  getMessage,
+  getRelativePath,
+} from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/eslint.txt';
 
 // https://github.com/eslint/eslint/blob/v9.39.4/lib/types/index.d.ts
-type Fix = {
+type ResultMessageFix = {
   range: [number, number];
   text: string;
 };
 
-type Message = {
+type ResultMessage = {
   column: number;
   endColumn?: number | undefined;
   endLine?: number | undefined;
   fatal?: true | undefined;
-  fix?: Fix | undefined;
+  fix?: ResultMessageFix | undefined;
   line: number;
   message: string;
   messageId?: string | undefined;
@@ -26,23 +28,23 @@ type Message = {
   suggestions?:
     | {
         desc: string;
-        fix: Fix;
+        fix: ResultMessageFix;
         messageId?: string | undefined;
       }[]
     | undefined;
 };
 
-type EslintResult = {
+type Result = {
   errorCount: number;
   fatalErrorCount: number;
   filePath: string;
   fixableErrorCount: number;
   fixableWarningCount: number;
-  messages: Message[];
+  messages: ResultMessage[];
   output?: string | undefined;
   source?: string | undefined;
   stats: unknown;
-  suppressedMessages: (Message & {
+  suppressedMessages: (ResultMessage & {
     suppressions: {
       justification: string;
       kind: string;
@@ -52,22 +54,20 @@ type EslintResult = {
   warningCount: number;
 };
 
+type FileOutput = Result[];
+
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const records = JSON.parse(file) as EslintResult[];
+  const results = JSON.parse(file) as FileOutput;
 
-  records.forEach((record) => {
-    const { filePath: absoluteFilePath, messages } = record;
-
-    const filePath = relative(projectRoot, absoluteFilePath).replaceAll(
-      sep,
-      '/',
-    );
+  results.forEach((result) => {
+    const { filePath: absoluteFilePath, messages: rawErrors } = result;
+    const filePath = getRelativePath(absoluteFilePath, projectRoot);
 
     const lineToRules = new Map<number, string[]>();
     const data = new Map<number, string>();
 
-    messages.forEach(({ line, ruleId }) => {
+    rawErrors.forEach(({ line, ruleId }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(ruleId);
       } else {
@@ -76,9 +76,7 @@ function normalize(file: string, projectRoot: string): FilePathToData {
     });
 
     lineToRules.forEach((rules, line) => {
-      const message = Array.from(new Set(rules.sort())).join(', ');
-
-      data.set(line, message);
+      data.set(line, getMessage(rules));
     });
 
     filePathToData.set(filePath, data);

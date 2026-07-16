@@ -1,12 +1,14 @@
-import { relative, sep } from 'node:path';
-
 import type { FilePathToData, FileWithErrors } from '../../types/index.js';
-import { getFilesWithErrors } from './shared/index.js';
+import {
+  getFilesWithErrors,
+  getMessage,
+  getRelativePath,
+} from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/stylelint.txt';
 
 // https://github.com/stylelint/stylelint/blob/17.9.0/types/stylelint/index.d.ts#L1255-L1281
-type StylelintWarning = {
+type ResultWarning = {
   column: number;
   endColumn?: number;
   endLine?: number;
@@ -20,7 +22,7 @@ type StylelintWarning = {
 };
 
 // https://github.com/stylelint/stylelint/blob/17.9.0/types/såtylelint/index.d.ts#L1286-L1307
-type StylelintResult = {
+type Result = {
   deprecations: {
     reference?: string;
     text: string;
@@ -32,29 +34,27 @@ type StylelintResult = {
   }[];
   parseErrors: unknown[];
   source: string;
-  warnings: StylelintWarning[];
+  warnings: ResultWarning[];
 };
+
+type FileOutput = Result[];
 
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const records = JSON.parse(file) as StylelintResult[];
+  const results = JSON.parse(file) as FileOutput;
 
-  records.forEach((record) => {
-    const { errored, source: absoluteFilePath, warnings } = record;
+  results.forEach((result) => {
+    const { errored, source: absoluteFilePath, warnings: rawErrors } = result;
+    const filePath = getRelativePath(absoluteFilePath, projectRoot);
 
     if (!errored) {
       return;
     }
 
-    const filePath = relative(projectRoot, absoluteFilePath).replaceAll(
-      sep,
-      '/',
-    );
-
     const lineToRules = new Map<number, string[]>();
     const data = new Map<number, string>();
 
-    warnings.forEach(({ line, rule }) => {
+    rawErrors.forEach(({ line, rule }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(rule);
       } else {
@@ -63,9 +63,7 @@ function normalize(file: string, projectRoot: string): FilePathToData {
     });
 
     lineToRules.forEach((rules, line) => {
-      const message = Array.from(new Set(rules.sort())).join(', ');
-
-      data.set(line, message);
+      data.set(line, getMessage(rules));
     });
 
     filePathToData.set(filePath, data);

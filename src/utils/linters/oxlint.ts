@@ -1,9 +1,9 @@
 import type { FilePathToData, FileWithErrors } from '../../types/index.js';
-import { getFilesWithErrors } from './shared/index.js';
+import { getFilesWithErrors, getMessage } from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/oxlint.txt';
 
-type Label = {
+type DiagnosticLabel = {
   span: {
     column: number;
     length: number;
@@ -16,25 +16,25 @@ type Diagnostic = {
   causes: string[];
   code?: string;
   filename: string;
-  labels: [Label];
+  labels: [DiagnosticLabel];
   message: string;
   related: string[];
   severity: 'error' | 'warning';
   url: string;
 };
 
-type Message = {
-  line: number;
-  ruleId: string;
-};
-
 // https://github.com/oxc-project/oxc/blob/oxlint_v1.71.0/apps/oxlint/src/output_formatter/json.rs#L79-L92
-type OxlintResult = {
+type FileOutput = {
   diagnostics: Diagnostic[];
   number_of_files: number;
   number_of_rules: number;
   start_time: number;
   threads_count: number;
+};
+
+type RawError = {
+  line: number;
+  ruleId: string;
 };
 
 function extractRuleId(code: string): string {
@@ -49,12 +49,12 @@ function extractRuleId(code: string): string {
 
 function normalize(file: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const { diagnostics } = JSON.parse(file) as OxlintResult;
+  const { diagnostics: results } = JSON.parse(file) as FileOutput;
 
-  const filePathToMessages = new Map<string, Message[]>();
+  const filePathToRawErrors = new Map<string, RawError[]>();
 
-  diagnostics.forEach((diagnostic) => {
-    const { code, filename: filePath, labels } = diagnostic;
+  results.forEach((result) => {
+    const { code, filename: filePath, labels } = result;
 
     if (code === undefined) {
       return;
@@ -63,23 +63,23 @@ function normalize(file: string): FilePathToData {
     const line = labels[0].span.line;
     const ruleId = extractRuleId(code);
 
-    const message = {
+    const rawError = {
       line,
       ruleId,
     };
 
-    if (filePathToMessages.has(filePath)) {
-      filePathToMessages.get(filePath)!.push(message);
+    if (filePathToRawErrors.has(filePath)) {
+      filePathToRawErrors.get(filePath)!.push(rawError);
     } else {
-      filePathToMessages.set(filePath, [message]);
+      filePathToRawErrors.set(filePath, [rawError]);
     }
   });
 
-  filePathToMessages.forEach((messages, filePath) => {
-    const data = new Map<number, string>();
+  filePathToRawErrors.forEach((rawErrors, filePath) => {
     const lineToRules = new Map<number, string[]>();
+    const data = new Map<number, string>();
 
-    messages.forEach(({ line, ruleId }) => {
+    rawErrors.forEach(({ line, ruleId }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(ruleId);
       } else {
@@ -88,9 +88,7 @@ function normalize(file: string): FilePathToData {
     });
 
     lineToRules.forEach((rules, line) => {
-      const message = Array.from(new Set(rules.sort())).join(', ');
-
-      data.set(line, message);
+      data.set(line, getMessage(rules));
     });
 
     filePathToData.set(filePath, data);
