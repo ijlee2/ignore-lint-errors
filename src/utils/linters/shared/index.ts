@@ -1,3 +1,5 @@
+import { relative, sep } from 'node:path';
+
 import type {
   FilePathToData,
   FileWithErrors,
@@ -42,4 +44,15 @@ export function getFilesWithErrors(
   });
 
   return filesWithErrors;
+}
+
+export function getMessage(rules: string[]): string {
+  return Array.from(new Set(rules.sort())).join(', ');
+}
+
+export function getRelativePath(
+  absoluteFilePath: string,
+  projectRoot: string,
+): string {
+  return relative(projectRoot, absoluteFilePath).replaceAll(sep, '/');
 }

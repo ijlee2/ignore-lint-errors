@@ -1,7 +1,9 @@
-import { relative, sep } from 'node:path';
-
 import type { FilePathToData, FileWithErrors } from '../../types/index.js';
-import { getFilesWithErrors } from './shared/index.js';
+import {
+  getFilesWithErrors,
+  getMessage,
+  getRelativePath,
+} from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/stylelint.txt';
 
@@ -41,15 +43,11 @@ function normalize(file: string, projectRoot: string): FilePathToData {
 
   records.forEach((record) => {
     const { errored, source: absoluteFilePath, warnings } = record;
+    const filePath = getRelativePath(absoluteFilePath, projectRoot);
 
     if (!errored) {
       return;
     }
-
-    const filePath = relative(projectRoot, absoluteFilePath).replaceAll(
-      sep,
-      '/',
-    );
 
     const lineToRules = new Map<number, string[]>();
     const data = new Map<number, string>();
@@ -63,9 +61,7 @@ function normalize(file: string, projectRoot: string): FilePathToData {
     });
 
     lineToRules.forEach((rules, line) => {
-      const message = Array.from(new Set(rules.sort())).join(', ');
-
-      data.set(line, message);
+      data.set(line, getMessage(rules));
     });
 
     filePathToData.set(filePath, data);

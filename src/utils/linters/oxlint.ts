@@ -1,5 +1,5 @@
 import type { FilePathToData, FileWithErrors } from '../../types/index.js';
-import { getFilesWithErrors } from './shared/index.js';
+import { getFilesWithErrors, getMessage } from './shared/index.js';
 
 export const outputFilePath = '.ignore-lint-errors/oxlint.txt';
 
@@ -88,9 +88,7 @@ function normalize(file: string): FilePathToData {
     });
 
     lineToRules.forEach((rules, line) => {
-      const message = Array.from(new Set(rules.sort())).join(', ');
-
-      data.set(line, message);
+      data.set(line, getMessage(rules));
     });
 
     filePathToData.set(filePath, data);
