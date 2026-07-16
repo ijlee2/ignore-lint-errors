@@ -8,7 +8,7 @@ import {
 export const outputFilePath = '.ignore-lint-errors/stylelint.txt';
 
 // https://github.com/stylelint/stylelint/blob/17.9.0/types/stylelint/index.d.ts#L1255-L1281
-type StylelintWarning = {
+type ResultWarning = {
   column: number;
   endColumn?: number;
   endLine?: number;
@@ -22,7 +22,7 @@ type StylelintWarning = {
 };
 
 // https://github.com/stylelint/stylelint/blob/17.9.0/types/såtylelint/index.d.ts#L1286-L1307
-type StylelintResult = {
+type Result = {
   deprecations: {
     reference?: string;
     text: string;
@@ -34,12 +34,14 @@ type StylelintResult = {
   }[];
   parseErrors: unknown[];
   source: string;
-  warnings: StylelintWarning[];
+  warnings: ResultWarning[];
 };
+
+type FileOutput = Result[];
 
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const results = JSON.parse(file) as StylelintResult[];
+  const results = JSON.parse(file) as FileOutput;
 
   results.forEach((result) => {
     const { errored, source: absoluteFilePath, warnings: rawErrors } = result;
