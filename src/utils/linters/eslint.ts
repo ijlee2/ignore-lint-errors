@@ -56,16 +56,16 @@ type EslintResult = {
 
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const records = JSON.parse(file) as EslintResult[];
+  const results = JSON.parse(file) as EslintResult[];
 
-  records.forEach((record) => {
-    const { filePath: absoluteFilePath, messages } = record;
+  results.forEach((result) => {
+    const { filePath: absoluteFilePath, messages: rawErrors } = result;
     const filePath = getRelativePath(absoluteFilePath, projectRoot);
 
     const lineToRules = new Map<number, string[]>();
     const data = new Map<number, string>();
 
-    messages.forEach(({ line, ruleId }) => {
+    rawErrors.forEach(({ line, ruleId }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(ruleId);
       } else {

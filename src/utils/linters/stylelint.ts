@@ -39,10 +39,10 @@ type StylelintResult = {
 
 function normalize(file: string, projectRoot: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const records = JSON.parse(file) as StylelintResult[];
+  const results = JSON.parse(file) as StylelintResult[];
 
-  records.forEach((record) => {
-    const { errored, source: absoluteFilePath, warnings } = record;
+  results.forEach((result) => {
+    const { errored, source: absoluteFilePath, warnings: rawErrors } = result;
     const filePath = getRelativePath(absoluteFilePath, projectRoot);
 
     if (!errored) {
@@ -52,7 +52,7 @@ function normalize(file: string, projectRoot: string): FilePathToData {
     const lineToRules = new Map<number, string[]>();
     const data = new Map<number, string>();
 
-    warnings.forEach(({ line, rule }) => {
+    rawErrors.forEach(({ line, rule }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(rule);
       } else {

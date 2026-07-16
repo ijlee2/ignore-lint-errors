@@ -23,7 +23,7 @@ type Diagnostic = {
   url: string;
 };
 
-type Message = {
+type RawError = {
   line: number;
   ruleId: string;
 };
@@ -49,12 +49,12 @@ function extractRuleId(code: string): string {
 
 function normalize(file: string): FilePathToData {
   const filePathToData: FilePathToData = new Map();
-  const { diagnostics } = JSON.parse(file) as OxlintResult;
+  const { diagnostics: results } = JSON.parse(file) as OxlintResult;
 
-  const filePathToMessages = new Map<string, Message[]>();
+  const filePathToRawErrors = new Map<string, RawError[]>();
 
-  diagnostics.forEach((diagnostic) => {
-    const { code, filename: filePath, labels } = diagnostic;
+  results.forEach((result) => {
+    const { code, filename: filePath, labels } = result;
 
     if (code === undefined) {
       return;
@@ -63,23 +63,23 @@ function normalize(file: string): FilePathToData {
     const line = labels[0].span.line;
     const ruleId = extractRuleId(code);
 
-    const message = {
+    const rawError = {
       line,
       ruleId,
     };
 
-    if (filePathToMessages.has(filePath)) {
-      filePathToMessages.get(filePath)!.push(message);
+    if (filePathToRawErrors.has(filePath)) {
+      filePathToRawErrors.get(filePath)!.push(rawError);
     } else {
-      filePathToMessages.set(filePath, [message]);
+      filePathToRawErrors.set(filePath, [rawError]);
     }
   });
 
-  filePathToMessages.forEach((messages, filePath) => {
-    const data = new Map<number, string>();
+  filePathToRawErrors.forEach((rawErrors, filePath) => {
     const lineToRules = new Map<number, string[]>();
+    const data = new Map<number, string>();
 
-    messages.forEach(({ line, ruleId }) => {
+    rawErrors.forEach(({ line, ruleId }) => {
       if (lineToRules.has(line)) {
         lineToRules.get(line)!.push(ruleId);
       } else {
