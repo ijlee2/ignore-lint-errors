@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.5
+
+### Patch Changes
+
+- [#42](https://github.com/ijlee2/ignore-lint-errors/pull/42) Updated dependencies ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.1.4
 
 ### Patch Changes
