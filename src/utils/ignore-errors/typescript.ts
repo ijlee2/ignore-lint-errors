@@ -10,9 +10,15 @@ type Data = {
   lines: string[];
 };
 
+function getComment(message: string, data: Data): string {
+  const { ignoreDirective } = data;
+
+  return `// ${ignoreDirective}: ${message}`;
+}
+
 function ignoreError(lintError: LintError, data: Data): void {
   const { line, message } = lintError;
-  const { ignoreDirective, lines } = data;
+  const { lines } = data;
 
   const currentIndex = line - 1;
   const previousIndex = Math.max(currentIndex - 1, 0);
@@ -21,7 +27,7 @@ function ignoreError(lintError: LintError, data: Data): void {
     ignoreDirective: 'eslint-disable-next-line',
   });
 
-  const comment = `// ${ignoreDirective}: ${message}`;
+  const comment = getComment(message, data);
 
   if (ignoredRules.length === 0) {
     lines.splice(currentIndex, 0, comment);
@@ -40,51 +46,6 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
       ignoreDirective,
       lines,
     });
-  });
-
-  return lines.join(EOL);
-}
-
-// For *.{gjs,gts}, ignore type checks in templates with a Handlebars comment
-export function ignoreErrorsTemplateTag(
-  file: string,
-  lintErrors: LintError[],
-): string {
-  const lines = file.split(EOL);
-  const templateTags = findTemplateTags(file);
-
-  lintErrors.forEach((lintError) => {
-    const { line, message } = lintError;
-    const currentIndex = line - 1;
-
-    const templateTagIndex = templateTags.findIndex(({ lineRange }) => {
-      return lineRange.start <= line && line <= lineRange.end;
-    });
-
-    const erroredInTemplate = templateTagIndex >= 0;
-
-    if (!erroredInTemplate) {
-      ignoreError(lintError, {
-        ignoreDirective,
-        lines,
-      });
-
-      return;
-    }
-
-    const comment = `{{! @glint-expect-error: ${message} }}`;
-    const { contents, lineRange } = templateTags[templateTagIndex]!;
-
-    if (lineRange.start === lineRange.end) {
-      const newTemplate = lines[currentIndex]!.replace(
-        /<template>(.+)<\/template>/,
-        [`<template>${comment}`, `${contents}</template>`].join(EOL),
-      );
-
-      lines.splice(currentIndex, 1, newTemplate);
-    } else {
-      lines.splice(currentIndex, 0, comment);
-    }
   });
 
   return lines.join(EOL);
@@ -130,4 +91,51 @@ export function ignoreErrorsFallback(
   }
 
   return newFile;
+}
+
+export function ignoreErrorsTemplateTag(
+  file: string,
+  lintErrors: LintError[],
+): string {
+  const lines = file.split(EOL);
+  const templateTags = findTemplateTags(file);
+
+  lintErrors.forEach((lintError) => {
+    const { line, message } = lintError;
+
+    const templateTagIndex = templateTags.findIndex(({ lineRange }) => {
+      return lineRange.start <= line && line <= lineRange.end;
+    });
+
+    const erroredInTemplate = templateTagIndex >= 0;
+
+    if (!erroredInTemplate) {
+      ignoreError(lintError, {
+        ignoreDirective,
+        lines,
+      });
+
+      return;
+    }
+
+    const { contents, lineRange } = templateTags[templateTagIndex]!;
+
+    const currentIndex = line - 1;
+    const comment = `{{! @glint-expect-error: ${message} }}`;
+
+    if (lineRange.start < lineRange.end) {
+      lines.splice(currentIndex, 0, comment);
+
+      return;
+    }
+
+    const newTemplate = lines[currentIndex]!.replace(
+      /<template>(.+)<\/template>/,
+      [`<template>${comment}`, `${contents}</template>`].join(EOL),
+    );
+
+    lines.splice(currentIndex, 1, newTemplate);
+  });
+
+  return lines.join(EOL);
 }

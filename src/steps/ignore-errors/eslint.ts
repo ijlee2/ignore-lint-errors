@@ -23,10 +23,13 @@ export function ignoreErrorsFromEslint(options: Options): void {
 
   filesWithErrors.forEach(({ filePath, lintErrors }) => {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
+    let newFile: string;
 
-    const newFile = isTemplateTag(filePath)
-      ? ignoreErrorsTemplateTag(file, lintErrors)
-      : ignoreErrors(file, lintErrors);
+    if (isTemplateTag(filePath)) {
+      newFile = ignoreErrorsTemplateTag(file, lintErrors);
+    } else {
+      newFile = ignoreErrors(file, lintErrors);
+    }
 
     writeFileSync(join(projectRoot, filePath), newFile, 'utf8');
   });

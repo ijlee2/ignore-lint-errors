@@ -12,7 +12,7 @@ function append(ignoredRules: string[], message: string): string {
   return [...ignoredRules, ...message.split(', ')].sort().join(', ');
 }
 
-function createComment(message: string, data: Data): string {
+function getComment(message: string, data: Data): string {
   const { commentStyle, ignoreDirective } = data;
 
   switch (commentStyle) {
@@ -47,7 +47,7 @@ export function ignoreError(lintError: LintError, data: Data): void {
     message = append(ignoredRules, message);
   }
 
-  const comment = createComment(message, data);
+  const comment = getComment(message, data);
 
   if (ignoredRules.length === 0) {
     lines.splice(currentIndex, 0, comment);

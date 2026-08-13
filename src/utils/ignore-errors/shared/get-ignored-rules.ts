@@ -1,11 +1,12 @@
 import { AST } from '@codemod-utils/ast-javascript';
 
-export function getIgnoredRules(
-  lineOfCode: string,
-  options: {
-    ignoreDirective: string;
-  },
-): string[] {
+type Data = {
+  ignoreDirective: string;
+};
+
+export function getIgnoredRules(lineOfCode: string, data: Data): string[] {
+  const { ignoreDirective } = data;
+
   let ignoredRules: string[] = [];
 
   try {
@@ -14,12 +15,12 @@ export function getIgnoredRules(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         const comment = (path.value.value as string).trim();
 
-        if (!comment.startsWith(options.ignoreDirective)) {
+        if (!comment.startsWith(ignoreDirective)) {
           return false;
         }
 
         ignoredRules = comment
-          .replace(new RegExp(`^${options.ignoreDirective}\\s*`, 'g'), '')
+          .replace(new RegExp(`^${ignoreDirective}\\s*`, 'g'), '')
           .split(',')
           .reduce<string[]>((accumulator, token) => {
             const rule = token.trim();

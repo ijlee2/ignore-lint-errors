@@ -47,25 +47,25 @@ export function ignoreErrorsTemplateTag(
 
     const { contents, lineRange } = templateTags[templateTagIndex]!;
 
-    if (lineRange.start === lineRange.end) {
-      const currentIndex = line - 1;
-      const comment = `{{!-- ${ignoreDirective} ${message} --}}`;
-
-      const newTemplate = lines[currentIndex]!.replace(
-        /<template>(.+)<\/template>/,
-        [`<template>${comment}`, `${contents}</template>`].join(EOL),
-      );
-
-      lines.splice(currentIndex, 1, newTemplate);
+    if (lineRange.start < lineRange.end) {
+      ignoreError(lintError, {
+        commentStyle: 'template-inline',
+        ignoreDirective,
+        lines,
+      });
 
       return;
     }
 
-    ignoreError(lintError, {
-      commentStyle: 'template-inline',
-      ignoreDirective,
-      lines,
-    });
+    const currentIndex = line - 1;
+    const comment = `{{! ${ignoreDirective} ${message} }}`;
+
+    const newTemplate = lines[currentIndex]!.replace(
+      /<template>(.+)<\/template>/,
+      [`<template>${comment}`, `${contents}</template>`].join(EOL),
+    );
+
+    lines.splice(currentIndex, 1, newTemplate);
   });
 
   return lines.join(EOL);

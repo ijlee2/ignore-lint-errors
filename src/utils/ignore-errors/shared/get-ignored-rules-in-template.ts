@@ -1,12 +1,15 @@
 import { AST } from '@codemod-utils/ast-template';
 
-// In *.{gjs,gts} files, an ignore directive in <template> is a Handlebars comment
+type Data = {
+  ignoreDirective: string;
+};
+
 export function getIgnoredRulesInTemplate(
   lineOfCode: string,
-  options: {
-    ignoreDirective: string;
-  },
+  data: Data,
 ): string[] {
+  const { ignoreDirective } = data;
+
   let ignoredRules: string[] = [];
 
   try {
@@ -14,12 +17,12 @@ export function getIgnoredRulesInTemplate(
       MustacheCommentStatement(node) {
         const comment = node.value.trim();
 
-        if (!comment.startsWith(options.ignoreDirective)) {
+        if (!comment.startsWith(ignoreDirective)) {
           return;
         }
 
         ignoredRules = comment
-          .replace(new RegExp(`^${options.ignoreDirective}\\s*`, 'g'), '')
+          .replace(new RegExp(`^${ignoreDirective}\\s*`, 'g'), '')
           .split(',')
           .reduce<string[]>((accumulator, token) => {
             const rule = token.trim();

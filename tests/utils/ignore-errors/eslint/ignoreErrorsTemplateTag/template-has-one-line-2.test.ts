@@ -30,7 +30,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > template has on
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `const MyComponent = <template>{{!-- eslint-disable-next-line ember/no-implicit-this --}}`,
+      `const MyComponent = <template>{{! eslint-disable-next-line ember/no-implicit-this }}`,
       `{{add (hash x=1 y=2)}}</template>;`,
     ]),
   );
