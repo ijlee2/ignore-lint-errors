@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0
+
+### Minor Changes
+
+- [#46](https://github.com/ijlee2/ignore-lint-errors/pull/46) Improved support for `eslint-plugin-ember@v13` ([@ijlee2](https://github.com/ijlee2))
+
+### Patch Changes
+
+- [#45](https://github.com/ijlee2/ignore-lint-errors/pull/45) Extracted function (ignoreError) ([@ijlee2](https://github.com/ijlee2))
+- [#44](https://github.com/ijlee2/ignore-lint-errors/pull/44) Created dedicated utility files ([@ijlee2](https://github.com/ijlee2))
+- [#43](https://github.com/ijlee2/ignore-lint-errors/pull/43) Updated dependencies ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.1.5
 
 ### Patch Changes
