@@ -1,19 +1,21 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrors } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrors > template has one line (1)', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsInTemplateTags > file has errors (2)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
     `}`,
     ``,
-    `<template>{{add (hash x=1 y=2)}}</template>`,
+    `<template>`,
+    `  {{add (hash x=1 y=2)}}`,
+    `</template>`,
   ]);
 
-  const newFile = ignoreErrors(file, [
+  const newFile = ignoreErrorsInTemplateTags(file, [
     {
-      line: 5,
+      line: 6,
       message: `Cannot find name 'hash'.`,
     },
     {
@@ -30,8 +32,10 @@ test('utils | ignore-errors | typescript | ignoreErrors > template has one line 
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! @glint-expect-error: Cannot find name 'hash'. }}`,
-      `{{add (hash x=1 y=2)}}</template>`,
+      `<template>`,
+      `{{! @glint-expect-error: Cannot find name 'hash'. }}`,
+      `  {{add (hash x=1 y=2)}}`,
+      `</template>`,
     ]),
   );
 });

@@ -34,6 +34,23 @@ const ignoreDirective = '@ts-expect-error';
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   const lines = file.split(EOL);
+
+  lintErrors.forEach((lintError) => {
+    ignoreError(lintError, {
+      ignoreDirective,
+      lines,
+    });
+  });
+
+  return lines.join(EOL);
+}
+
+// For *.{gjs,gts}, ignore type checks in templates with a Handlebars comment
+export function ignoreErrorsInTemplateTags(
+  file: string,
+  lintErrors: LintError[],
+): string {
+  const lines = file.split(EOL);
   const templateTags = findTemplateTags(file);
 
   lintErrors.forEach((lintError) => {

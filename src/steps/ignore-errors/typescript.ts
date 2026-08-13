@@ -4,10 +4,14 @@ import { join } from 'node:path';
 import { removeFiles } from '@codemod-utils/files';
 
 import type { Options } from '../../types/index.js';
-import { areTemplateTagsValid } from '../../utils/ignore-errors/shared/index.js';
+import {
+  areTemplateTagsValid,
+  isTemplateTagFile,
+} from '../../utils/ignore-errors/shared/index.js';
 import {
   ignoreErrors,
   ignoreErrorsFallback,
+  ignoreErrorsInTemplateTags,
 } from '../../utils/ignore-errors/typescript.js';
 import {
   outputFilePath,
@@ -26,10 +30,16 @@ export function ignoreErrorsFromTypescript(options: Options): void {
 
   filesWithErrors.forEach(({ filePath, lintErrors }) => {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
-    let newFile = ignoreErrors(file, lintErrors);
+    let newFile: string;
 
-    if (!areTemplateTagsValid(newFile)) {
-      newFile = ignoreErrorsFallback(file, lintErrors);
+    if (isTemplateTagFile(filePath)) {
+      newFile = ignoreErrorsInTemplateTags(file, lintErrors);
+
+      if (!areTemplateTagsValid(newFile)) {
+        newFile = ignoreErrorsFallback(file, lintErrors);
+      }
+    } else {
+      newFile = ignoreErrors(file, lintErrors);
     }
 
     writeFileSync(join(projectRoot, filePath), newFile, 'utf8');
