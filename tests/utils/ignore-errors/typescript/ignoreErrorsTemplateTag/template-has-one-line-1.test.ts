@@ -14,7 +14,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > template ha
   const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 5,
-      message: `Cannot find name 'hash'.`,
+      message: `Cannot find name 'x'.`,
     },
     {
       line: 1,
@@ -30,7 +30,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > template ha
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! @glint-expect-error: Cannot find name 'hash'. }}`,
+      `<template>{{! @glint-expect-error: Cannot find name 'x'. }}`,
       `{{add (hash x=1 y=2)}}</template>`,
     ]),
   );

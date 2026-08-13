@@ -9,32 +9,31 @@ test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > file has er
     `}`,
     ``,
     `<template>`,
-    `  {{add (hash x=1 y=2)}}`,
+    `  <div data-test-output ...attributes class="sum">`,
+    `    {{add (hash x=1 y=2)}}`,
+    `  </div>`,
     `</template>`,
   ]);
 
   const newFile = ignoreErrorsTemplateTag(file, [
     {
-      line: 6,
-      message: `Cannot find name 'hash'.`,
-    },
-    {
-      line: 1,
-      message: `Parameter 'vec' implicitly has an 'any' type.`,
+      line: 7,
+      message: `Cannot find name 'x'.`,
     },
   ]);
 
   assert.strictEqual(
     newFile,
     normalizeFile([
-      `// @ts-expect-error: Parameter 'vec' implicitly has an 'any' type.`,
       `function add(vec) {`,
       `  return vec.x + vec.y;`,
       `}`,
       ``,
       `<template>`,
-      `{{! @glint-expect-error: Cannot find name 'hash'. }}`,
-      `  {{add (hash x=1 y=2)}}`,
+      `  <div data-test-output ...attributes class="sum">`,
+      `{{! @glint-expect-error: Cannot find name 'x'. }}`,
+      `    {{add (hash x=1 y=2)}}`,
+      `  </div>`,
       `</template>`,
     ]),
   );

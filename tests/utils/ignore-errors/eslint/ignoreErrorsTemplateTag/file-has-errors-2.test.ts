@@ -9,7 +9,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors
     `}`,
     ``,
     `<template>`,
-    `  <div data-test-hello ...attributes class="message">`,
+    `  <div data-test-output ...attributes class="sum">`,
     `    {{add (hash x=1 y=2)}}`,
     `  </div>`,
     `</template>`,
@@ -18,7 +18,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors
   const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 7,
-      message: 'ember/no-implicit-this',
+      message: 'ember/template-no-implicit-this, no-undef',
     },
     {
       line: 6,
@@ -40,8 +40,8 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors
       ``,
       `<template>`,
       `{{! eslint-disable-next-line ember/template-sort-invocations }}`,
-      `  <div data-test-hello ...attributes class="message">`,
-      `{{! eslint-disable-next-line ember/no-implicit-this }}`,
+      `  <div data-test-output ...attributes class="sum">`,
+      `{{! eslint-disable-next-line ember/template-no-implicit-this, no-undef }}`,
       `    {{add (hash x=1 y=2)}}`,
       `  </div>`,
       `</template>`,

@@ -4,38 +4,37 @@ import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/
 
 test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > file has errors (1)', function () {
   const file = normalizeFile([
-    `function add(vec) {`,
-    `  return vec.x + vec.y;`,
-    `}`,
+    `import { local } from 'embroider-css-modules';`,
     ``,
-    `function add(x, y) {`,
-    `  return x + y;`,
-    `}`,
+    `import styles from './hello.module.css';`,
+    ``,
+    `<template>`,
+    `  <div data-test-hello ...attributes class={{local styles "message" "emphasize"}}>`,
+    `    Hello Vite!`,
+    `  </div>`,
+    `</template>`,
   ]);
 
   const newFile = ignoreErrorsTemplateTag(file, [
     {
-      line: 5,
-      message: `Duplicate function implementation. Parameter 'x' implicitly has an 'any' type. Parameter 'y' implicitly has an 'any' type.`,
-    },
-    {
-      line: 1,
-      message: `Duplicate function implementation. Parameter 'vec' implicitly has an 'any' type.`,
+      line: 6,
+      message: `Argument of type 'void' is not assignable to parameter of type 'Element'.`,
     },
   ]);
 
   assert.strictEqual(
     newFile,
     normalizeFile([
-      `// @ts-expect-error: Duplicate function implementation. Parameter 'vec' implicitly has an 'any' type.`,
-      `function add(vec) {`,
-      `  return vec.x + vec.y;`,
-      `}`,
+      `import { local } from 'embroider-css-modules';`,
       ``,
-      `// @ts-expect-error: Duplicate function implementation. Parameter 'x' implicitly has an 'any' type. Parameter 'y' implicitly has an 'any' type.`,
-      `function add(x, y) {`,
-      `  return x + y;`,
-      `}`,
+      `import styles from './hello.module.css';`,
+      ``,
+      `<template>`,
+      `{{! @glint-expect-error: Argument of type 'void' is not assignable to parameter of type 'Element'. }}`,
+      `  <div data-test-hello ...attributes class={{local styles "message" "emphasize"}}>`,
+      `    Hello Vite!`,
+      `  </div>`,
+      `</template>`,
     ]),
   );
 });

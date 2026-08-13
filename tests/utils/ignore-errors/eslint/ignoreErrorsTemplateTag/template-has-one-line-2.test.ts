@@ -8,13 +8,16 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > template has on
     `  return vec.x + vec.y;`,
     `}`,
     ``,
-    `const MyComponent = <template>{{add (hash x=1 y=2)}}</template>;`,
+    `<template>`,
+    `  {{! eslint-disable-next-line no-undef }}`,
+    `  {{add (hash x=1 y=2)}}`,
+    `</template>`,
   ]);
 
   const newFile = ignoreErrorsTemplateTag(file, [
     {
-      line: 5,
-      message: 'ember/no-implicit-this',
+      line: 7,
+      message: 'ember/template-no-implicit-this',
     },
     {
       line: 1,
@@ -30,8 +33,10 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > template has on
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `const MyComponent = <template>{{! eslint-disable-next-line ember/no-implicit-this }}`,
-      `{{add (hash x=1 y=2)}}</template>;`,
+      `<template>`,
+      `{{! eslint-disable-next-line ember/template-no-implicit-this, no-undef }}`,
+      `  {{add (hash x=1 y=2)}}`,
+      `</template>`,
     ]),
   );
 });

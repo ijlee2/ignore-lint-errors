@@ -9,7 +9,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has no err
     `import styles from './hello.module.css';`,
     ``,
     `<template>`,
-    `  <div data-test-hello ...attributes class={{local styles "message"}}>`,
+    `  <div class={{local styles "message" "emphasize"}} data-test-hello ...attributes>`,
     `    Hello Vite!`,
     `  </div>`,
     `</template>`,

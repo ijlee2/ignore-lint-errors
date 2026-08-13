@@ -14,7 +14,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > template has on
   const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 5,
-      message: 'ember/no-implicit-this',
+      message: 'ember/template-no-implicit-this, no-undef',
     },
     {
       line: 1,
@@ -30,7 +30,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > template has on
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `<template>{{! eslint-disable-next-line ember/no-implicit-this }}`,
+      `<template>{{! eslint-disable-next-line ember/template-no-implicit-this, no-undef }}`,
       `{{add (hash x=1 y=2)}}</template>`,
     ]),
   );
