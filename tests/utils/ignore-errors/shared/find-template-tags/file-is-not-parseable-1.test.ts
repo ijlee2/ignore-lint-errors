@@ -2,7 +2,7 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { findTemplateTags } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | findTemplateTags > file is not parseable (1)', function () {
+test('utils | ignore-errors | shared | find-template-tags > file is not parseable (1)', function () {
   const file = normalizeFile([
     `const ListItem = <template>`,
     `  <li>`,

@@ -2,7 +2,7 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { areTemplateTagsValid } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | areTemplateTagsValid > file is parseable (4)', function () {
+test('utils | ignore-errors | shared | are-template-tags-valid > file is parseable (4)', function () {
   const file = normalizeFile([
     `import { local } from 'embroider-css-modules';`,
     ``,

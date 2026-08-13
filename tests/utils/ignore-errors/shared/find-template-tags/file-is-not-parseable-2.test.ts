@@ -2,7 +2,7 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { findTemplateTags } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | findTemplateTags > file is not parseable (2)', function () {
+test('utils | ignore-errors | shared | find-template-tags > file is not parseable (2)', function () {
   const file = normalizeFile([
     `{{! @glint-expect-error: Incorrect type }}`,
     `const ListItem = <template><li>{{concat "Item " @index}}</li></template>;`,

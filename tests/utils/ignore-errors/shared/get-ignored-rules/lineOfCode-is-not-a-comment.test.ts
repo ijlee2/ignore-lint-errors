@@ -2,8 +2,8 @@ import { assert, test } from '@codemod-utils/tests';
 
 import { getIgnoredRules } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | getIgnoredRules > lineOfCode is not the right ignore directive (1)', function () {
-  const file = '/* eslint-disable rule-2, rule-1, rule-3 */';
+test('utils | ignore-errors | shared | get-ignored-rules > lineOfCode is not a comment', function () {
+  const file = 'function add(vec) {';
 
   const ignoredRules = getIgnoredRules(file, {
     ignoreDirective: 'eslint-disable-next-line',
