@@ -6,7 +6,7 @@ import { removeFiles } from '@codemod-utils/files';
 import type { Options } from '../../types/index.js';
 import {
   ignoreErrors,
-  ignoreErrorsInTemplateTags,
+  ignoreErrorsTemplateTag,
 } from '../../utils/ignore-errors/eslint.js';
 import { isTemplateTag } from '../../utils/ignore-errors/shared/index.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
@@ -25,7 +25,7 @@ export function ignoreErrorsFromEslint(options: Options): void {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
 
     const newFile = isTemplateTag(filePath)
-      ? ignoreErrorsInTemplateTags(file, lintErrors)
+      ? ignoreErrorsTemplateTag(file, lintErrors)
       : ignoreErrors(file, lintErrors);
 
     writeFileSync(join(projectRoot, filePath), newFile, 'utf8');

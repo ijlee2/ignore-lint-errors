@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/eslint.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/eslint.js';
 
-test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has a local ignore (1)', function () {
+test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has a local ignore (1)', function () {
   const file = normalizeFile([
     `// eslint-disable-next-line rule-2, rule-1`,
     `function add(vec) {`,
@@ -14,7 +14,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has a l
     `</template>`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 2,
       message: '@typescript-eslint/explicit-function-return-type',

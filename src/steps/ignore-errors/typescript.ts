@@ -11,7 +11,7 @@ import {
 import {
   ignoreErrors,
   ignoreErrorsFallback,
-  ignoreErrorsInTemplateTags,
+  ignoreErrorsTemplateTag,
 } from '../../utils/ignore-errors/typescript.js';
 import {
   outputFilePath,
@@ -33,7 +33,7 @@ export function ignoreErrorsFromTypescript(options: Options): void {
     let newFile: string;
 
     if (isTemplateTag(filePath)) {
-      newFile = ignoreErrorsInTemplateTags(file, lintErrors);
+      newFile = ignoreErrorsTemplateTag(file, lintErrors);
 
       if (!areTemplateTagsValid(newFile)) {
         newFile = ignoreErrorsFallback(file, lintErrors);

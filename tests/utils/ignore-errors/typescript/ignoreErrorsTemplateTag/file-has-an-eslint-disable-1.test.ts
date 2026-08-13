@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrorsInTemplateTags > file has an eslint-disable (1)', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > file has an eslint-disable (1)', function () {
   const file = normalizeFile([
     `// eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unused-vars`,
     `function add(vec) {`,
@@ -17,7 +17,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsInTemplateTags > file has
     `}`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 8,
       message: `Duplicate function implementation. Parameter 'x' implicitly has an 'any' type. Parameter 'y' implicitly has an 'any' type.`,

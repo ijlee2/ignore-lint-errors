@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/eslint.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/eslint.js';
 
-test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has errors (2)', function () {
+test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors (2)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
@@ -15,7 +15,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has err
     `</template>`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 7,
       message: 'ember/no-implicit-this',

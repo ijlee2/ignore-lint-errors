@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/eslint.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/eslint.js';
 
-test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has a local ignore (2)', function () {
+test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has a local ignore (2)', function () {
   const file = normalizeFile([
     `<template>`,
     `  {{!-- eslint-disable-next-line ember/template-sort-invocations --}}`,
@@ -12,7 +12,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has a l
     `</template>`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 3,
       message: 'ember/no-implicit-this',

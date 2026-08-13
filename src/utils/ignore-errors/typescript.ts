@@ -46,7 +46,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 }
 
 // For *.{gjs,gts}, ignore type checks in templates with a Handlebars comment
-export function ignoreErrorsInTemplateTags(
+export function ignoreErrorsTemplateTag(
   file: string,
   lintErrors: LintError[],
 ): string {

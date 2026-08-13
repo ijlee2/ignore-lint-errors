@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/eslint.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/eslint.js';
 
-test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has errors (1)', function () {
+test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors (1)', function () {
   const file = normalizeFile([
     `import { local } from 'embroider-css-modules';`,
     ``,
@@ -15,7 +15,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsInTemplateTags > file has err
     `</template>`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 6,
       message: 'ember/template-sort-invocations',

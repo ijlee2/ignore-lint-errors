@@ -1,8 +1,8 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrorsInTemplateTags } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrorsInTemplateTags > template has one line (1)', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > template has one line (1)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
@@ -11,7 +11,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsInTemplateTags > template
     `<template>{{add (hash x=1 y=2)}}</template>`,
   ]);
 
-  const newFile = ignoreErrorsInTemplateTags(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 5,
       message: `Cannot find name 'hash'.`,

@@ -18,8 +18,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   return lines.join(EOL);
 }
 
-// For *.{gjs,gts}, ignore errors in templates with a Handlebars comment
-export function ignoreErrorsInTemplateTags(
+export function ignoreErrorsTemplateTag(
   file: string,
   lintErrors: LintError[],
 ): string {
