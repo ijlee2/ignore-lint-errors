@@ -3,4 +3,4 @@ export * from './find-template-tags.js';
 export * from './get-ignored-rules.js';
 export * from './get-ignored-rules-in-template.js';
 export * from './ignore-error.js';
-export * from './is-template-tag-file.js';
+export * from './is-template-tag.js';

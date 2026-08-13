@@ -6,7 +6,7 @@ import { removeFiles } from '@codemod-utils/files';
 import type { Options } from '../../types/index.js';
 import {
   areTemplateTagsValid,
-  isTemplateTagFile,
+  isTemplateTag,
 } from '../../utils/ignore-errors/shared/index.js';
 import {
   ignoreErrors,
@@ -32,7 +32,7 @@ export function ignoreErrorsFromTypescript(options: Options): void {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
     let newFile: string;
 
-    if (isTemplateTagFile(filePath)) {
+    if (isTemplateTag(filePath)) {
       newFile = ignoreErrorsInTemplateTags(file, lintErrors);
 
       if (!areTemplateTagsValid(newFile)) {

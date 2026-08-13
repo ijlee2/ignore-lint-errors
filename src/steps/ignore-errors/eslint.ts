@@ -8,7 +8,7 @@ import {
   ignoreErrors,
   ignoreErrorsInTemplateTags,
 } from '../../utils/ignore-errors/eslint.js';
-import { isTemplateTagFile } from '../../utils/ignore-errors/shared/index.js';
+import { isTemplateTag } from '../../utils/ignore-errors/shared/index.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
 
 export function ignoreErrorsFromEslint(options: Options): void {
@@ -24,7 +24,7 @@ export function ignoreErrorsFromEslint(options: Options): void {
   filesWithErrors.forEach(({ filePath, lintErrors }) => {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
 
-    const newFile = isTemplateTagFile(filePath)
+    const newFile = isTemplateTag(filePath)
       ? ignoreErrorsInTemplateTags(file, lintErrors)
       : ignoreErrors(file, lintErrors);
 
