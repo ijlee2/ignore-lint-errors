@@ -5,13 +5,40 @@ import { updateTemplates } from '@codemod-utils/ast-template-tag';
 import type { LintError } from '../../types/index.js';
 import { findTemplateTags, getIgnoredRules } from './shared/index.js';
 
+type Data = {
+  ignoreDirective: string;
+  lines: string[];
+};
+
+function ignoreError(lintError: LintError, data: Data): void {
+  const { line, message } = lintError;
+  const { ignoreDirective, lines } = data;
+
+  const currentIndex = line - 1;
+  const previousIndex = Math.max(currentIndex - 1, 0);
+
+  const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
+    ignoreDirective: 'eslint-disable-next-line',
+  });
+
+  const comment = `// ${ignoreDirective}: ${message}`;
+
+  if (ignoredRules.length === 0) {
+    lines.splice(currentIndex, 0, comment);
+  } else {
+    lines.splice(previousIndex, 0, comment);
+  }
+}
+
+const ignoreDirective = '@ts-expect-error';
+
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   const lines = file.split(EOL);
   const templateTags = findTemplateTags(file);
 
-  lintErrors.forEach(({ line, message }) => {
+  lintErrors.forEach((lintError) => {
+    const { line, message } = lintError;
     const currentIndex = line - 1;
-    const previousIndex = Math.max(currentIndex - 1, 0);
 
     const templateTagIndex = templateTags.findIndex(({ lineRange }) => {
       return lineRange.start <= line && line <= lineRange.end;
@@ -19,34 +46,27 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
     const erroredInTemplate = templateTagIndex >= 0;
 
-    if (erroredInTemplate) {
-      const comment = `{{! @glint-expect-error: ${message} }}`;
-      const { contents, lineRange } = templateTags[templateTagIndex]!;
-
-      if (lineRange.start === lineRange.end) {
-        const newTemplate = lines[currentIndex]!.replace(
-          /<template>(.+)<\/template>/,
-          [`<template>${comment}`, `${contents}</template>`].join(EOL),
-        );
-
-        lines.splice(currentIndex, 1, newTemplate);
-      } else {
-        lines.splice(currentIndex, 0, comment);
-      }
+    if (!erroredInTemplate) {
+      ignoreError(lintError, {
+        ignoreDirective,
+        lines,
+      });
 
       return;
     }
 
-    const comment = `// @ts-expect-error: ${message}`;
+    const comment = `{{! @glint-expect-error: ${message} }}`;
+    const { contents, lineRange } = templateTags[templateTagIndex]!;
 
-    const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
-      ignoreDirective: 'eslint-disable-next-line',
-    });
+    if (lineRange.start === lineRange.end) {
+      const newTemplate = lines[currentIndex]!.replace(
+        /<template>(.+)<\/template>/,
+        [`<template>${comment}`, `${contents}</template>`].join(EOL),
+      );
 
-    if (ignoredRules.length === 0) {
-      lines.splice(currentIndex, 0, comment);
+      lines.splice(currentIndex, 1, newTemplate);
     } else {
-      lines.splice(previousIndex, 0, comment);
+      lines.splice(currentIndex, 0, comment);
     }
   });
 
@@ -63,30 +83,23 @@ export function ignoreErrorsFallback(
   const templateTags = findTemplateTags(file);
   let hasErrorInTemplate = false;
 
-  lintErrors.forEach(({ line, message }) => {
-    const currentIndex = line - 1;
-    const previousIndex = Math.max(currentIndex - 1, 0);
+  lintErrors.forEach((lintError) => {
+    const { line } = lintError;
 
     const erroredInTemplate = templateTags.some(({ lineRange }) => {
       return lineRange.start <= line && line <= lineRange.end;
     });
 
-    if (erroredInTemplate) {
-      hasErrorInTemplate = true;
+    if (!erroredInTemplate) {
+      ignoreError(lintError, {
+        ignoreDirective,
+        lines,
+      });
+
       return;
     }
 
-    const comment = `// @ts-expect-error: ${message}`;
-
-    const ignoredRules = getIgnoredRules(lines[previousIndex]!, {
-      ignoreDirective: 'eslint-disable-next-line',
-    });
-
-    if (ignoredRules.length === 0) {
-      lines.splice(currentIndex, 0, comment);
-    } else {
-      lines.splice(previousIndex, 0, comment);
-    }
+    hasErrorInTemplate = true;
   });
 
   let newFile = lines.join(EOL);
