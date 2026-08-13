@@ -2,7 +2,7 @@ import { assert, test } from '@codemod-utils/tests';
 
 import { ignoreError } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | ignore-error > blockComment is true', function () {
+test('utils | ignore-errors | shared | ignore-error > commentStyle is javascript-block', function () {
   const lines = [
     `/* @ts-nocheck */`,
     `/* eslint-disable rule-1, rule-2 */`,
@@ -18,7 +18,7 @@ test('utils | ignore-errors | shared | ignore-error > blockComment is true', fun
   };
 
   ignoreError(lintError, {
-    blockComment: true,
+    commentStyle: 'javascript-block',
     ignoreDirective: 'eslint-disable-next-line',
     lines,
   });

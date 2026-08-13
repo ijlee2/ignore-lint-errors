@@ -16,7 +16,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > file has error
   const newFile = ignoreErrorsFallback(file, [
     {
       line: 6,
-      message: `Cannot find name 'hash'.`,
+      message: `Cannot find name 'x'.`,
     },
     {
       line: 1,

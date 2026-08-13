@@ -1,20 +1,20 @@
 import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
-import { ignoreErrors } from '../../../../../src/utils/ignore-errors/typescript.js';
+import { ignoreErrorsTemplateTag } from '../../../../../src/utils/ignore-errors/typescript.js';
 
-test('utils | ignore-errors | typescript | ignoreErrors > template has one line (2)', function () {
+test('utils | ignore-errors | typescript | ignoreErrorsTemplateTag > template has one line (1)', function () {
   const file = normalizeFile([
     `function add(vec) {`,
     `  return vec.x + vec.y;`,
     `}`,
     ``,
-    `const MyComponent = <template>{{add (hash x=1 y=2)}}</template>;`,
+    `<template>{{add (hash x=1 y=2)}}</template>`,
   ]);
 
-  const newFile = ignoreErrors(file, [
+  const newFile = ignoreErrorsTemplateTag(file, [
     {
       line: 5,
-      message: `Cannot find name 'hash'.`,
+      message: `Cannot find name 'x'.`,
     },
     {
       line: 1,
@@ -30,8 +30,8 @@ test('utils | ignore-errors | typescript | ignoreErrors > template has one line 
       `  return vec.x + vec.y;`,
       `}`,
       ``,
-      `const MyComponent = <template>{{! @glint-expect-error: Cannot find name 'hash'. }}`,
-      `{{add (hash x=1 y=2)}}</template>;`,
+      `<template>{{! @glint-expect-error: Cannot find name 'x'. }}`,
+      `{{add (hash x=1 y=2)}}</template>`,
     ]),
   );
 });

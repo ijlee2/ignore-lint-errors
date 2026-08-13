@@ -14,7 +14,7 @@ test('utils | ignore-errors | typescript | ignoreErrorsFallback > template has o
   const newFile = ignoreErrorsFallback(file, [
     {
       line: 5,
-      message: `Cannot find name 'hash'.`,
+      message: `Cannot find name 'x'.`,
     },
     {
       line: 1,

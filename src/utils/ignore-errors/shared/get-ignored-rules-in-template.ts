@@ -1,22 +1,24 @@
-import { AST } from '@codemod-utils/ast-javascript';
+import { AST } from '@codemod-utils/ast-template';
 
 type Data = {
   ignoreDirective: string;
 };
 
-export function getIgnoredRules(lineOfCode: string, data: Data): string[] {
+export function getIgnoredRulesInTemplate(
+  lineOfCode: string,
+  data: Data,
+): string[] {
   const { ignoreDirective } = data;
 
   let ignoredRules: string[] = [];
 
   try {
     AST.traverse(lineOfCode, {
-      visitComment(path) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        const comment = (path.value.value as string).trim();
+      MustacheCommentStatement(node) {
+        const comment = node.value.trim();
 
         if (!comment.startsWith(ignoreDirective)) {
-          return false;
+          return;
         }
 
         ignoredRules = comment
@@ -31,8 +33,6 @@ export function getIgnoredRules(lineOfCode: string, data: Data): string[] {
 
             return accumulator;
           }, []);
-
-        return false;
       },
     });
   } catch {

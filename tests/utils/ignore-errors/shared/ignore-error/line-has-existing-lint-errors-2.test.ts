@@ -17,6 +17,7 @@ test('utils | ignore-errors | shared | ignore-error > line has existing lint err
   };
 
   ignoreError(lintError, {
+    commentStyle: 'javascript-inline',
     ignoreDirective: 'eslint-disable-next-line',
     lines,
   });

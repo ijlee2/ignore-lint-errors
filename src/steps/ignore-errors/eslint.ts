@@ -4,7 +4,11 @@ import { join } from 'node:path';
 import { removeFiles } from '@codemod-utils/files';
 
 import type { Options } from '../../types/index.js';
-import { ignoreErrors } from '../../utils/ignore-errors/eslint.js';
+import {
+  ignoreErrors,
+  ignoreErrorsTemplateTag,
+} from '../../utils/ignore-errors/eslint.js';
+import { isTemplateTag } from '../../utils/ignore-errors/shared/index.js';
 import { outputFilePath, parseOutputFile } from '../../utils/linters/eslint.js';
 
 export function ignoreErrorsFromEslint(options: Options): void {
@@ -19,7 +23,13 @@ export function ignoreErrorsFromEslint(options: Options): void {
 
   filesWithErrors.forEach(({ filePath, lintErrors }) => {
     const file = readFileSync(join(projectRoot, filePath), 'utf8');
-    const newFile = ignoreErrors(file, lintErrors);
+    let newFile: string;
+
+    if (isTemplateTag(filePath)) {
+      newFile = ignoreErrorsTemplateTag(file, lintErrors);
+    } else {
+      newFile = ignoreErrors(file, lintErrors);
+    }
 
     writeFileSync(join(projectRoot, filePath), newFile, 'utf8');
   });
