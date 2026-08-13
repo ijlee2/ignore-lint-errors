@@ -2,7 +2,7 @@ import { assert, test } from '@codemod-utils/tests';
 
 import { getRelativePath } from '../../../../../src/utils/linters/shared/index.js';
 
-test('utils | linters | shared | getRelativePath > base case', function () {
+test('utils | linters | shared | get-relative-path > base case', function () {
   const projectRoot = 'tmp/eslint';
   const absoluteFilePath = 'tmp/eslint/app/components/example-1.gts';
 

@@ -2,12 +2,16 @@ import { assert, normalizeFile, test } from '@codemod-utils/tests';
 
 import { areTemplateTagsValid } from '../../../../../src/utils/ignore-errors/shared/index.js';
 
-test('utils | ignore-errors | shared | areTemplateTagsValid > file is parseable (1)', function () {
+test('utils | ignore-errors | shared | are-template-tags-valid > file is not parseable (1)', function () {
   const file = normalizeFile([
-    `import { concat } from '@ember/helper';`,
-    ``,
     `const ListItem = <template>`,
-    `  <li>{{concat "Item " @index}}</li>`,
+    `  <li>`,
+    `    {{concat`,
+    `      "Item "`,
+    `{{! @glint-expect-error: Incorrect type }}`,
+    `      @index`,
+    `    }}`,
+    `  </li>`,
     `</template>;`,
     ``,
     `const List = <template>`,
@@ -21,5 +25,5 @@ test('utils | ignore-errors | shared | areTemplateTagsValid > file is parseable 
     `export default List;`,
   ]);
 
-  assert.strictEqual(areTemplateTagsValid(file), true);
+  assert.strictEqual(areTemplateTagsValid(file), false);
 });
