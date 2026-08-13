@@ -5,8 +5,14 @@ import { updateTemplates } from '@codemod-utils/ast-template-tag';
 import type { LintError } from '../../types/index.js';
 import { findTemplateTags, getIgnoredRules } from './shared/index.js';
 
-function ignoreError(lintError: LintError, lines: string[]): void {
+type Data = {
+  ignoreDirective: string;
+  lines: string[];
+};
+
+function ignoreError(lintError: LintError, data: Data): void {
   const { line, message } = lintError;
+  const { ignoreDirective, lines } = data;
 
   const currentIndex = line - 1;
   const previousIndex = Math.max(currentIndex - 1, 0);
@@ -15,7 +21,7 @@ function ignoreError(lintError: LintError, lines: string[]): void {
     ignoreDirective: 'eslint-disable-next-line',
   });
 
-  const comment = `// @ts-expect-error: ${message}`;
+  const comment = `// ${ignoreDirective}: ${message}`;
 
   if (ignoredRules.length === 0) {
     lines.splice(currentIndex, 0, comment);
@@ -23,6 +29,8 @@ function ignoreError(lintError: LintError, lines: string[]): void {
     lines.splice(previousIndex, 0, comment);
   }
 }
+
+const ignoreDirective = '@ts-expect-error';
 
 export function ignoreErrors(file: string, lintErrors: LintError[]): string {
   const lines = file.split(EOL);
@@ -39,7 +47,10 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
     const erroredInTemplate = templateTagIndex >= 0;
 
     if (!erroredInTemplate) {
-      ignoreError(lintError, lines);
+      ignoreError(lintError, {
+        ignoreDirective,
+        lines,
+      });
 
       return;
     }
@@ -80,7 +91,10 @@ export function ignoreErrorsFallback(
     });
 
     if (!erroredInTemplate) {
-      ignoreError(lintError, lines);
+      ignoreError(lintError, {
+        ignoreDirective,
+        lines,
+      });
 
       return;
     }
