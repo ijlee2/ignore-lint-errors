@@ -30,7 +30,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has errors
       `import styles from './hello.module.css';`,
       ``,
       `<template>`,
-      `{{!-- eslint-disable-next-line ember/template-sort-invocations --}}`,
+      `{{! eslint-disable-next-line ember/template-sort-invocations }}`,
       `  <div data-test-hello ...attributes class={{local styles "message" "emphasize"}}>`,
       `    Hello Vite!`,
       `  </div>`,

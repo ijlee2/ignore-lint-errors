@@ -10,7 +10,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
   lintErrors.forEach((lintError) => {
     ignoreError(lintError, {
-      blockComment: true,
+      commentStyle: 'javascript-block',
       ignoreDirective,
       lines,
     });

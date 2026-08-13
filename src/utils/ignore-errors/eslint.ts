@@ -10,6 +10,7 @@ export function ignoreErrors(file: string, lintErrors: LintError[]): string {
 
   lintErrors.forEach((lintError) => {
     ignoreError(lintError, {
+      commentStyle: 'javascript-inline',
       ignoreDirective,
       lines,
     });
@@ -36,6 +37,7 @@ export function ignoreErrorsTemplateTag(
 
     if (!erroredInTemplate) {
       ignoreError(lintError, {
+        commentStyle: 'javascript-inline',
         ignoreDirective,
         lines,
       });
@@ -60,9 +62,9 @@ export function ignoreErrorsTemplateTag(
     }
 
     ignoreError(lintError, {
+      commentStyle: 'template-inline',
       ignoreDirective,
       lines,
-      templateComment: true,
     });
   });
 

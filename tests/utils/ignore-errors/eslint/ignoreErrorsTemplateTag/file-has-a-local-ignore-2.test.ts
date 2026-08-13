@@ -23,7 +23,7 @@ test('utils | ignore-errors | eslint | ignoreErrorsTemplateTag > file has a loca
     newFile,
     normalizeFile([
       `<template>`,
-      `{{!-- eslint-disable-next-line ember/no-implicit-this, ember/template-sort-invocations --}}`,
+      `{{! eslint-disable-next-line ember/no-implicit-this, ember/template-sort-invocations }}`,
       `  <div data-test-hello ...attributes class="message">`,
       `    {{add (hash x=1 y=2)}}`,
       `  </div>`,
