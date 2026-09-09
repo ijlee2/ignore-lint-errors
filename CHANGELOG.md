@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Patch Changes
+
+- [#50](https://github.com/ijlee2/ignore-lint-errors/pull/50) Updated Arguments and Compatibility in README ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.2.0
 
 ### Minor Changes
