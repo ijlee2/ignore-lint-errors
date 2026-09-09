@@ -74,33 +74,39 @@ pnpx ignore-lint-errors --root <path/to/your/project>
 
 Pass `--src` to lint specific files.
 
+eslint:
+
 ```sh
-# eslint supports files
+# Specific files
 pnpx ignore-lint-errors --linter eslint --src app/components/example-1.gts app/templates/example-2.gts
 
-# eslint supports directories
+# Specific directories
 pnpx ignore-lint-errors --linter eslint --src app tests
 
-# eslint supports globs
+# Globs
 pnpx ignore-lint-errors --linter eslint --src app/{components,templates}/**/*.gts
 ```
 
+oxlint:
+
 ```sh
-# oxlint supports files
+# Specific files
 pnpx ignore-lint-errors --linter oxlint --src app/components/example-1.gts app/templates/example-2.gts
 
-# oxlint supports directories
+# Specific directories
 pnpx ignore-lint-errors --linter oxlint --src app tests
 
-# oxlint supports globs
+# Globs
 pnpx ignore-lint-errors --linter oxlint --src app/{components,templates}/**/*.gts
 ```
 
+stylelint:
+
 ```sh
-# stylelint supports files
+# Specific files
 pnpx ignore-lint-errors --linter stylelint --src app/components/example-1.module.css app/templates/example-2.module.css
 
-# stylelint supports globs
+# Globs
 pnpx ignore-lint-errors --linter stylelint --src app/components/**/*.css
 ```
 
@@ -127,7 +133,7 @@ pnpm build
 ## Compatibility
 
 - Node.js v22 or above
-- Tested against `eslint@v9`, `glint@v2`, `oxlint@v1`, `stylelint@v17`, `typescript@v5`
+- Tested against `eslint@v10`, `glint@v2`, `oxlint@v1`, `stylelint@v17`, `typescript@v6`
 
 
 ## Contributing
