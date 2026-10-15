@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.3
+
+### Patch Changes
+
+- [#52](https://github.com/ijlee2/ignore-lint-errors/pull/52) Updated dependencies (replaced eslint with oxlint) ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.2.2
 
 ### Patch Changes
