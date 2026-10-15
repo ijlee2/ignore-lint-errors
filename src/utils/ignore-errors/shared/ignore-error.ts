@@ -31,7 +31,7 @@ function getComment(message: string, data: Data): string {
 }
 
 export function ignoreError(lintError: LintError, data: Data): void {
-  // eslint-disable-next-line prefer-const
+  // oxlint-disable-next-line eslint/prefer-const
   let { line, message } = lintError;
   const { commentStyle, ignoreDirective, lines } = data;
 
