@@ -12,7 +12,7 @@ export function getIgnoredRules(lineOfCode: string, data: Data): string[] {
   try {
     AST.traverse(lineOfCode, {
       visitComment(path) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-member-access
         const comment = (path.value.value as string).trim();
 
         if (!comment.startsWith(ignoreDirective)) {
