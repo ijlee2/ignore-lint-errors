@@ -38,13 +38,13 @@ type RawError = {
 };
 
 function extractRuleId(code: string): string {
-  const matches = code.match(/^.+\((.+)\)$/);
+  const matches = code.match(/^(.+)\((.+)\)$/);
 
-  if (matches === null) {
+  if (matches === null || matches.length !== 3) {
     throw new Error(`Unable to extract rule ID (code: ${code})`);
   }
 
-  return matches[1]!;
+  return `${matches[1]}/${matches[2]}`;
 }
 
 function normalize(file: string): FilePathToData {
