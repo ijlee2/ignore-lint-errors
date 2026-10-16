@@ -68,7 +68,8 @@ test('utils | linters | oxlint | parseOutputFile > file has errors', function ()
       lintErrors: [
         {
           line: 93,
-          message: 'no-unsafe-assignment, no-unsafe-member-access',
+          message:
+            'typescript/no-unsafe-assignment, typescript/no-unsafe-member-access',
         },
       ],
     },
@@ -77,11 +78,11 @@ test('utils | linters | oxlint | parseOutputFile > file has errors', function ()
       lintErrors: [
         {
           line: 19,
-          message: 'no-console',
+          message: 'eslint/no-console',
         },
         {
           line: 18,
-          message: 'no-console',
+          message: 'eslint/no-console',
         },
       ],
     },
