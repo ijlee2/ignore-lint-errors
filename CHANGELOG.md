@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0
+
+### Minor Changes
+
+- [#53](https://github.com/ijlee2/ignore-lint-errors/pull/53) Namespaced oxlint rules ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.2.3
 
 ### Patch Changes
