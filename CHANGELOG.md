@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.1
+
+### Patch Changes
+
+- [#55](https://github.com/ijlee2/ignore-lint-errors/pull/55) Updated dependencies ([@ijlee2](https://github.com/ijlee2))
+- [#54](https://github.com/ijlee2/ignore-lint-errors/pull/54) Introduced trusted publishing ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.3.0
 
 ### Minor Changes
