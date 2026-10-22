@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2
+
+### Patch Changes
+
+- [#56](https://github.com/ijlee2/ignore-lint-errors/pull/56) Updated @codemod-utils/ast-template to 4.1.3 (@glimmer/syntax to 0.97.0) ([@ijlee2](https://github.com/ijlee2))
+
 ## 1.3.1
 
 ### Patch Changes
